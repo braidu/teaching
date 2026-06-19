@@ -1,0 +1,2557 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>경기대학교 교직이수 플랫폼</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+:root{
+  --navy:#1a2a6c; --navy2:#0f1d4a; --coral:#ff6b6b; --green:#1d9a6c; --gold:#c9961f;
+  --bg:#f4f6fb; --card:#ffffff; --ink:#222; --sub:#6b7280; --line:#e5e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Pretendard','Apple SD Gothic Neo','Malgun Gothic',sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding-bottom:40px;}
+.wrap{max-width:880px;margin:0 auto;padding:0 14px;}
+header.top{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:22px 0 18px;position:sticky;top:0;z-index:40;}
+header.top .badge{display:inline-block;background:rgba(255,255,255,.15);font-size:11.5px;padding:4px 10px;border-radius:20px;margin-bottom:8px;letter-spacing:.3px;}
+header.top h1{font-size:21px;font-weight:800;letter-spacing:-.3px;margin-bottom:4px;}
+header.top p{font-size:12.5px;color:#cdd6f4;}
+header.top .wrap{position:relative;}
+header.top .toplinks{position:absolute;top:0;right:0;display:flex;gap:6px;flex-wrap:wrap;}
+header.top .toplinks a{background:rgba(255,255,255,.12);color:#fff;font-size:11px;font-weight:700;padding:6px 10px;border-radius:8px;text-decoration:none;border:1px solid rgba(255,255,255,.25);white-space:nowrap;}
+header.top .toplinks a:hover{background:rgba(255,255,255,.25);}
+@media(max-width:560px){header.top .toplinks{position:static;margin-top:10px;justify-content:flex-start;}}
+
+.sel-bar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;}
+.sel-inner{display:flex;align-items:center;gap:10px;padding:10px 14px;flex-wrap:wrap;}
+.sel-inner .lbl{font-size:12px;font-weight:700;color:var(--navy);white-space:nowrap;}
+.sel-btn{flex:1;min-width:140px;border:1.5px solid var(--line);background:#fff;color:#444;font-size:12px;font-weight:600;padding:8px 10px;border-radius:8px;cursor:pointer;transition:.15s;text-align:center;}
+.sel-btn.on{border-color:var(--navy);background:var(--navy);color:#fff;}
+
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:10px 14px 0;background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:29;-webkit-overflow-scrolling:touch;}
+nav.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{flex:0 0 auto;border:none;background:transparent;color:var(--sub);font-size:12.5px;font-weight:700;padding:9px 12px 11px;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.tab-btn.on{color:var(--navy);border-bottom-color:var(--navy);}
+
+.tabc{display:none;padding:18px 14px 10px;}
+.tabc.show{display:block;animation:fade .25s;}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+h2.h-title{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:7px;}
+.h-sub{font-size:12px;color:var(--sub);margin-bottom:14px;}
+.sec-label{font-size:13.5px;font-weight:800;color:var(--navy2);margin:20px 0 8px;padding-bottom:5px;border-bottom:2px solid var(--navy);display:flex;align-items:center;gap:6px;}
+.sec-label:first-of-type{margin-top:6px;}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 15px;margin-bottom:12px;}
+.card h3{font-size:13.5px;font-weight:800;color:var(--navy);margin-bottom:6px;}
+.card p, .card li{font-size:12.5px;color:#444;}
+.card ul{padding-left:18px;margin-top:4px;}
+
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
+@media(max-width:520px){.grid3{grid-template-columns:repeat(1,1fr);}}
+.stat{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 10px;text-align:center;}
+.stat .lab{font-size:11px;color:var(--sub);margin-bottom:4px;}
+.stat .val{font-size:17px;font-weight:800;color:var(--navy);}
+.stat .note{font-size:10.5px;color:var(--coral);margin-top:3px;font-weight:700;}
+
+/* 타임라인 */
+.tl{position:relative;padding-left:26px;margin-top:6px;}
+.tl::before{content:'';position:absolute;left:9px;top:6px;bottom:6px;width:2px;background:var(--line);}
+.tl-item{position:relative;margin-bottom:14px;cursor:pointer;}
+.tl-item::before{content:'';position:absolute;left:-26px;top:3px;width:14px;height:14px;border-radius:50%;background:var(--navy);border:3px solid #fff;box-shadow:0 0 0 2px var(--navy);}
+.tl-item.gold::before{background:var(--gold);box-shadow:0 0 0 2px var(--gold);}
+.tl-time{font-size:11px;color:var(--coral);font-weight:700;margin-bottom:2px;}
+.tl-item h4{font-size:13.5px;font-weight:800;color:var(--ink);margin-bottom:3px;}
+.tl-item .desc{font-size:12px;color:#555;}
+.tl-detail{display:none;background:#f7f8fc;border-left:3px solid var(--navy);border-radius:0 8px 8px 0;padding:9px 11px;margin-top:7px;font-size:11.5px;color:#555;}
+.tl-detail.open{display:block;}
+.tl-item .more{font-size:10.5px;color:var(--navy);font-weight:700;margin-top:4px;}
+.warn-box{background:#fff4f4;border:1px solid #ffd9d9;border-radius:8px;padding:8px 10px;font-size:11.5px;color:#c0392b;margin-top:6px;}
+
+/* 칩 / 코랄 */
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0;}
+.chip{font-size:11.5px;background:#eef1fb;color:var(--navy);border-radius:20px;padding:6px 11px;cursor:pointer;font-weight:600;border:1px solid #dde3f7;}
+.chip.req{background:var(--navy);color:#fff;border-color:var(--navy);}
+.chip.new{background:var(--coral);color:#fff;border-color:var(--coral);}
+.detail-box{display:none;background:#f7f8fc;border-radius:8px;padding:9px 11px;font-size:11.5px;color:#555;margin-top:6px;border-left:3px solid var(--gold);}
+.detail-box.open{display:block;}
+.courses-box{background:#f7f8fc;border-radius:8px;padding:9px 11px;font-size:11.5px;color:#555;border-left:3px solid var(--navy);}
+.courses-box strong{display:block;font-size:12.5px;color:var(--navy);margin-bottom:4px;}
+
+/* 검색 */
+.search-input{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;margin-bottom:12px;}
+.dept-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:8px;}
+.dept-card h4{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.pill{font-size:10px;font-weight:700;border-radius:6px;padding:2px 7px;color:#fff;}
+.pill.navy{background:var(--navy);}
+.pill.teal{background:#0d9488;}
+.pill.amber{background:#b45309;}
+.pill.purple{background:#7c3aed;}
+.dept-card .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:560px){.dept-card .g2{grid-template-columns:1fr;}}
+.dept-card .courses{font-size:11.5px;color:#555;}
+.dept-card .courses strong{display:block;color:var(--ink);font-size:11.5px;margin-bottom:3px;}
+
+
+.contact{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;}
+.contact .c{flex:1;min-width:160px;background:#f7f8fc;border-radius:8px;padding:9px 11px;font-size:11.5px;}
+.contact .c strong{display:block;color:var(--navy);font-size:12px;margin-bottom:2px;}
+
+/* 진로진단 / 채용레이더 / 비교과 */
+.diag-hd h2{font-size:16px;color:var(--navy);margin-bottom:4px;}
+.diag-hd p{font-size:12px;color:var(--sub);}
+.diag-prog-wrap{background:#eef1fb;border-radius:20px;height:8px;overflow:hidden;margin:10px 0 4px;}
+.diag-prog-bar{background:linear-gradient(90deg,var(--navy),var(--coral));height:100%;width:0%;transition:.3s;}
+.diag-body{margin-top:10px;}
+.diag-step{display:none;}
+.diag-step.active{display:block;}
+.diag-step h3{font-size:14px;color:var(--navy);margin-bottom:4px;}
+.dsub{font-size:11.5px;color:var(--sub);margin-bottom:10px;}
+.diag-opts{display:flex;flex-direction:column;gap:8px;}
+.dopt{text-align:left;border:1.5px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;cursor:pointer;font-size:12.5px;font-family:inherit;width:100%;}
+.dopt strong{display:block;color:var(--ink);margin-bottom:2px;}
+.dopt span{display:block;font-size:11px;color:var(--sub);}
+.dopt.sel{border-color:var(--navy);background:#eef2ff;}
+.dchips{display:flex;flex-wrap:wrap;gap:6px;}
+.dchip{border:1.5px solid var(--line);background:#fff;border-radius:20px;padding:7px 12px;font-size:12px;cursor:pointer;font-family:inherit;}
+.dchip.sel{border-color:var(--navy);background:var(--navy);color:#fff;}
+.diag-nav{display:flex;justify-content:space-between;margin-top:14px;}
+.btn-prev,.btn-next{padding:9px 18px;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;border:1.5px solid var(--line);background:#fff;color:var(--navy);font-family:inherit;}
+.btn-next{background:var(--navy);color:#fff;border-color:var(--navy);margin-left:auto;}
+.res-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;border-radius:12px;padding:16px 18px;margin-bottom:12px;}
+.rbadge{display:inline-block;background:rgba(255,255,255,.18);font-size:11px;padding:3px 10px;border-radius:20px;margin-bottom:6px;}
+.res-hero h3{font-size:16px;margin-bottom:4px;}
+.res-hero p{font-size:12px;color:#dde3f7;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:560px){.g3{grid-template-columns:1fr;}}
+.track-card{background:#f7f8fc;border-radius:10px;padding:10px;}
+.track-lbl{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:6px;margin-bottom:6px;}
+.track-card h4{font-size:12.5px;color:var(--navy);margin-bottom:4px;}
+.track-card ul{padding-left:16px;font-size:11.5px;color:#555;}
+.cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:6px;}
+@media(max-width:560px){.cert-grid{grid-template-columns:1fr;}}
+.cert-rec{background:#f7f8fc;border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:8px 10px;}
+.cert-rec strong{display:block;font-size:12px;color:var(--navy);}
+.cert-rec span{font-size:11px;color:var(--sub);}
+.action-grid{display:grid;grid-template-columns:repeat(3,1fr);}
+@media(max-width:560px){.action-grid{grid-template-columns:1fr;}}
+.action-col{padding:12px 14px;border-right:1px solid var(--line);}
+.action-col:last-child{border-right:none;}
+.action-col h4{font-size:12px;color:var(--navy);margin-bottom:6px;}
+.action-col ul{padding-left:16px;font-size:11.5px;color:#555;}
+.job-list{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.job-card{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1px solid var(--line);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);}
+.job-card strong{display:block;font-size:12.5px;color:var(--navy);}
+.job-card span{font-size:11px;color:var(--sub);}
+.jtag{flex:0 0 auto;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;color:#fff;}
+.jtag.r{background:var(--coral);}
+.jtag.b{background:var(--navy);}
+.jtag.g{background:var(--green);}
+.jtag.a{background:var(--gold);}
+.job-card.rec{border-color:var(--coral);background:#fff8f8;}
+.rec-badge{display:inline-block;background:var(--coral);color:#fff;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-right:6px;}
+.prog-card{border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px;}
+.prog-card h4{font-size:12.5px;color:var(--navy);margin-bottom:3px;}
+.prog-card .meta{font-size:11px;color:var(--sub);margin-bottom:4px;}
+.prog-card a.lnk{display:inline-block;margin-top:6px;font-size:11.5px;font-weight:700;color:var(--navy);}
+.linkgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px;}
+@media(max-width:560px){.linkgrid{grid-template-columns:1fr;}}
+.linkgrid a{display:block;border:1px solid var(--line);border-radius:10px;padding:10px 12px;text-decoration:none;color:var(--ink);font-size:12.5px;font-weight:700;text-align:center;}
+.linkgrid a:hover{border-color:var(--navy);color:var(--navy);}
+
+.ai-tabs{display:flex;gap:6px;margin:10px 0;}
+.ai-tab{flex:1;padding:9px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--sub);}
+.ai-tab.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.ai-chat-log{min-height:120px;max-height:320px;overflow-y:auto;border:1px solid var(--line);border-radius:10px;padding:10px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px;background:#f7f8fc;}
+.chat-bubble{max-width:85%;padding:8px 12px;border-radius:10px;font-size:12.5px;line-height:1.55;white-space:pre-wrap;}
+.chat-bubble.ai{background:#fff;border:1px solid var(--line);align-self:flex-start;}
+.chat-bubble.user{background:var(--navy);color:#fff;align-self:flex-end;}
+.ai-input-row{display:flex;gap:6px;}
+.ai-input-row textarea{flex:1;min-height:60px;padding:9px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;font-family:inherit;resize:vertical;}
+.ai-input-row button{padding:9px 16px;background:var(--coral);color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;align-self:flex-end;}
+.ai-result-body{border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12.5px;line-height:1.7;background:#f7f8fc;margin-top:10px;}
+
+/* ===== 학년별 달력 ===== */
+.grade-btn{padding:7px 16px;border:1.5px solid var(--line);background:#fff;color:var(--sub);font-size:12.5px;font-weight:700;border-radius:20px;cursor:pointer;transition:.15s;}
+.grade-btn.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.cal-year{margin-bottom:20px;border-radius:12px;overflow:hidden;border:1px solid var(--line);}
+.cal-year.hidden{display:none;}
+.cal-year-header{display:flex;align-items:center;gap:10px;padding:12px 16px;color:#fff;}
+.cal-year-header span:first-child{font-size:15px;font-weight:800;}
+.cal-year-sub{font-size:12px;opacity:.85;}
+.cal-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:0;background:#fff;}
+.cal-month{padding:12px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);}
+.cal-month-header{font-size:12.5px;font-weight:800;color:var(--navy);margin-bottom:6px;padding-bottom:5px;border-bottom:2px solid var(--line);}
+.cal-item{font-size:12px;line-height:1.55;padding:5px 7px;border-radius:5px;margin-bottom:4px;}
+.cal-item.key{background:#eef1fb;color:var(--navy);font-weight:700;}
+.cal-item.warn{background:#fff3cd;color:#7c4a03;}
+.cal-item.info{background:#f4f6fb;color:#374151;}
+.cal-item.grade{background:#dcfce7;color:#065f46;font-weight:600;}
+.cal-item.tip{background:#fff;color:var(--sub);font-size:11.5px;border:1px solid var(--line);}
+/* ===== 지도교수 탭 ===== */
+.prof-step{display:flex;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
+.prof-step:last-child{border-bottom:none;}
+.prof-step-badge{flex:0 0 auto;padding:5px 10px;border-radius:6px;color:#fff;font-size:11px;font-weight:700;height:fit-content;white-space:nowrap;text-align:center;}
+.prof-step-body{flex:1;}
+.prof-step-body strong{font-size:13px;color:var(--navy);display:block;margin-bottom:5px;}
+.prof-list{margin:0;padding-left:16px;font-size:12.5px;color:#374151;line-height:1.75;}
+.prof-table{width:100%;border-collapse:collapse;font-size:12px;min-width:600px;}
+.prof-table th{background:var(--navy);color:#fff;padding:8px 10px;text-align:left;white-space:nowrap;}
+.prof-table td{padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+.prof-table tr:hover td{background:#f4f6fb;}
+
+footer{text-align:center;font-size:11px;color:#aaa;padding:24px 14px 4px;}
+
+/* ===== 건의하기 플로팅 버튼 & 모달 ===== */
+.fab{position:fixed;bottom:24px;right:20px;z-index:999;background:var(--coral);color:#fff;border:none;border-radius:50px;padding:12px 18px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,107,.45);display:flex;align-items:center;gap:7px;transition:.2s;}
+.fab:hover{background:#e85555;transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,107,107,.55);}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:16px;width:min(92vw,560px);max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.modal-header{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;}
+.modal-header h3{font-size:15px;font-weight:800;}
+.modal-close{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;line-height:1;padding:0;}
+.modal-body{padding:16px 20px;overflow-y:auto;}
+.modal-iframe{width:100%;height:480px;border:none;border-radius:8px;}
+.modal-placeholder{background:#f4f6fb;border:2px dashed var(--line);border-radius:10px;padding:24px;text-align:center;color:var(--sub);font-size:13px;line-height:1.7;}
+.modal-placeholder strong{display:block;font-size:15px;color:var(--navy);margin-bottom:8px;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="toplinks">
+      <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&searchCnd=SJ&searchKrwd=%EA%B5%90%EC%A7%81" target="_blank"><i class="ti ti-speakerphone"></i> 교직 공지사항</a>
+      <a href="https://kutis.kyonggi.ac.kr/webkutis/view/indexWeb.jsp" target="_blank"><i class="ti ti-external-link"></i> 쿠티스(KUTIS)</a>
+      <a href="https://www.kyonggi.ac.kr/u_teacher/index.do" target="_blank"><i class="ti ti-school"></i> 교직학부</a>
+      <a href="https://barun.kyonggi.ac.kr/" target="_blank"><i class="ti ti-heart"></i> BARUN</a>
+      <a href="https://lms.kyonggi.ac.kr/login.php" target="_blank"><i class="ti ti-device-laptop"></i> LMS</a>
+    </div>
+    <span class="badge">경기대학교 교직과정</span>
+    <h1>교직이수 플랫폼 <span style="font-size:12px;background:rgba(255,200,0,.22);color:#ffe066;padding:3px 10px;border-radius:20px;font-weight:700;vertical-align:middle;letter-spacing:.2px;">🚧 개발 중</span></h1>
+    <p style="font-size:12px;color:#b0bbdc;margin-top:3px;">현재 개발 중인 플랫폼입니다. 내용이 변경될 수 있습니다. 자세한 안내는 반드시 최신 교직이수 공지 및 안내책자를 참고하세요. <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&pageUnit=10&sf.pnos=1073&sf.pnos=888&searchCnd=SJ&searchKrwd=%EA%B5%90%EC%A7%81%EA%B3%BC%EC%A0%95+%EC%95%88%EB%82%B4+%EC%B1%85%EC%9E%90" target="_blank" style="color:#ffe066;font-weight:700;text-decoration:underline;">📄 교직과정 안내 책자 바로가기 →</a></p>
+  </div>
+</header>
+
+<nav class="tabs wrap" id="tabNav">
+  <button class="tab-btn on" onclick="showTab('home')"><i class="ti ti-home"></i>홈</button>
+  <button class="tab-btn" onclick="showTab('process')"><i class="ti ti-map"></i>이수절차</button>
+  <button class="tab-btn" onclick="showTab('credit')"><i class="ti ti-school"></i>학점·조건</button>
+  <button class="tab-btn" onclick="showTab('cases')"><i class="ti ti-users"></i>선배 이수 사례</button>
+  <button class="tab-btn" onclick="showTab('calendar')"><i class="ti ti-calendar-event"></i>학년별 일정</button>
+  <button class="tab-btn" onclick="showTab('professor')"><i class="ti ti-user-check"></i>지도교수 안내</button>
+  <button class="tab-btn" onclick="showTab('career')"><i class="ti ti-compass"></i>진로·취업</button>
+  <button class="tab-btn" onclick="showTab('minor')"><i class="ti ti-certificate"></i>교육학 부전공</button>
+</nav>
+
+<div class="wrap">
+
+<!-- 홈 -->
+<div id="tab-home" class="tabc show">
+  <h2 class="h-title"><i class="ti ti-home"></i>한눈에 보는 교직이수</h2>
+  <p class="h-sub">2025-2학기 이후 선발자(2024년 이후 입학) 기준입니다. 2025-2학기 이전 선발자는 '디지털교육' 과목 1개(2학점)만 빠진다는 점 외에는 동일합니다.</p>
+
+  <div class="grid3">
+    <div class="stat"><div class="lab">전공과목</div><div class="val">50학점↑</div><div class="note">교원자격증 별도 기준</div></div>
+    <div class="stat"><div class="lab">교직과목</div><div class="val" id="home-gyojik">22학점↑</div><div class="note" id="home-gyojiknote">이론12+소양6+실습4</div></div>
+    <div class="stat"><div class="lab">교육봉사</div><div class="val">60시간↑</div><div class="note">4학년 2학기 전까지</div></div>
+  </div>
+
+  <div class="card">
+    <h3><i class="ti ti-bulb"></i> 지금 내가 할 일 찾기</h3>
+    <p style="margin-bottom:8px;">학년·학기와 선발 여부를 고르면, 지금 시기에 챙겨야 할 일을 알려드려요. <span style="font-size:11.5px;color:var(--sub);">여기서 학년은 <strong>교직과정 선발(2학년 2학기)을 기준</strong>으로 합니다. 군복무·휴학 등으로 입학연도와 다를 수 있어요.</span></p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+      <select id="todoYear" onchange="toggleTodoStatus()" style="flex:1;min-width:90px;padding:9px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;">
+        <option value="">학년 선택</option>
+        <option value="1">1학년</option><option value="2">2학년</option>
+        <option value="3">3학년</option><option value="4">4학년</option>
+      </select>
+      <select id="todoSem" onchange="toggleTodoStatus()" style="flex:1;min-width:90px;padding:9px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;">
+        <option value="">학기 선택</option>
+        <option value="1">1학기</option><option value="2">2학기</option>
+      </select>
+      <select id="todoStatus" style="flex:1;min-width:110px;padding:9px;border:1px solid var(--line);border-radius:8px;font-size:12.5px;display:none;">
+        <option value="before">교직과정 선발 전 (선발 발표 전)</option>
+        <option value="after">교직과정 선발 완료 (선발 발표 후)</option>
+      </select>
+    </div>
+    <div id="todoStatusHint" style="display:none;font-size:11.5px;color:var(--sub);margin:-4px 0 10px;">※ 2학년 2학기는 교직과정 선발이 진행되는 학기라, 선발 발표 전/후에 따라 할 일이 달라요. 해당하는 시점을 선택해주세요.</div>
+    <button onclick="genTodo()" style="width:100%;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">할 일 확인하기</button>
+    <div id="todoResult" style="margin-top:12px;"></div>
+  </div>
+
+  <div class="card">
+    <h3><i class="ti ti-info-circle"></i> 교직과정이란?</h3>
+    <p>교직과정은 일반 학과에 재학하면서 일정 요건을 충족하면 <strong>중등학교 정교사(2급) 자격증</strong>을 함께 취득할 수 있는 제도입니다. 자격증을 취득하면 어떤 강점이 생길까요?
+      <ul style="margin-top:8px;padding-left:18px;display:flex;flex-direction:column;gap:6px;">
+        <li><strong>기간제 교사 채용 자격</strong> — 전국 공·사립 중·고등학교에서 결원 발생 시, 교원자격증 소지자를 기간제 교사로 채용합니다. 졸업 직후부터 바로 지원할 수 있는 현실적인 취업 경로입니다. <a href="https://edurecruit.go.kr" target="_blank" style="display:inline-block;margin-top:4px;font-size:11px;font-weight:700;color:var(--navy);background:#eef1fb;border:1px solid #c7d0f0;border-radius:6px;padding:2px 8px;text-decoration:none;white-space:nowrap;">📋 나이스 기간제교원 채용공고 →</a></li>
+        <li><strong>사립학교 정규 교사 지원 자격</strong> — 사립 중·고등학교는 별도의 국가임용시험 없이 학교별 채용 절차(서류·면접 등)로 정규 교사를 선발합니다. 자격증이 있으면 바로 지원할 수 있습니다. <a href="https://www.goe.go.kr/recruit/main.do" target="_blank" style="display:inline-block;margin-top:4px;font-size:11px;font-weight:700;color:var(--navy);background:#eef1fb;border:1px solid #c7d0f0;border-radius:6px;padding:2px 8px;text-decoration:none;white-space:nowrap;">📋 경기도교육청 구인구직 →</a></li>
+        <li><strong>국공립학교 임용시험 응시 자격</strong> — 중등교원임용경쟁시험(임용고사)에 응시하려면 교원자격증이 반드시 필요합니다. 합격 시 국공립학교 정규 교원(공무원)으로 임용됩니다. <a href="https://www.kice.re.kr" target="_blank" style="display:inline-block;margin-top:4px;font-size:11px;font-weight:700;color:var(--navy);background:#eef1fb;border:1px solid #c7d0f0;border-radius:6px;padding:2px 8px;text-decoration:none;white-space:nowrap;">📋 한국교육과정평가원(임용시험 출제기관) →</a></li>
+        <li><strong>정교사 1급 자격 승급 가능</strong> — 교직 경력 3년 이상이 되면 1급 자격연수를 통해 정교사(1급)으로 승급할 수 있습니다. <a href="https://www.neti.go.kr" target="_blank" style="display:inline-block;margin-top:4px;font-size:11px;font-weight:700;color:var(--navy);background:#eef1fb;border:1px solid #c7d0f0;border-radius:6px;padding:2px 8px;text-decoration:none;white-space:nowrap;">📋 중앙교육연수원(자격연수 안내) →</a></li>
+        <li><strong>교육 관련 분야 취업 우대</strong> — 교육기업·학원·에듀테크 기업 등 사교육 분야 채용에서 '교원자격증 소지자 우대' 조건이 많습니다. 교육 콘텐츠 개발·강사직 지원 시 경쟁력이 높아집니다. <a href="https://www.saramin.co.kr/zf_user/search?searchword=%EA%B5%90%EC%9B%90%EC%9E%90%EA%B2%A9%EC%A6%9D" target="_blank" style="display:inline-block;margin-top:4px;font-size:11px;font-weight:700;color:var(--navy);background:#eef1fb;border:1px solid #c7d0f0;border-radius:6px;padding:2px 8px;text-decoration:none;white-space:nowrap;">📋 사람인 교원자격증 우대 채용공고 →</a></li>
+      </ul></p>
+  </div>
+
+  <div class="card" style="border-color:#ffd9d9;background:#fff8f8;">
+    <h3 style="color:var(--coral);"><i class="ti ti-alert-triangle"></i> 2025-2학기 이후 선발자 주요 변경사항</h3>
+    <p>2024년 이후 입학생부터 교직소양 영역에 <strong>'디지털교육(2학점)'</strong>이 신규 필수 과목으로 추가됩니다. 이에 따라 교직소양이 6학점→8학점, 전체 교직과목이 22학점→24학점으로 늘어납니다. </p>
+  </div>
+
+  <div class="card">
+    <h3><i class="ti ti-users"></i> 학과별 교직과정 선발 예정 인원</h3>
+    <p style="font-size:12.5px;color:var(--sub);margin-bottom:12px;">교육부 승인 인원 기준입니다. 변동 가능하니 공지를 꼭 확인하세요.</p>
+    <div style="overflow-x:auto;">
+      <table class="prof-table">
+        <thead>
+          <tr>
+            <th>단과대학</th>
+            <th>학과(전공)</th>
+            <th>표시과목</th>
+            <th>2026·2027학년도<br>선발 예정</th>
+            <th>2028학년도<br>선발 예정</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td rowspan="6" style="background:#eef1fb;font-weight:700;vertical-align:middle;">인문대학</td><td>국어국문학과</td><td>국어</td><td style="text-align:center;">5명</td><td style="text-align:center;">4명</td></tr>
+          <tr><td>영어영문학과</td><td>영어</td><td style="text-align:center;">7명</td><td style="text-align:center;">5명</td></tr>
+          <tr><td>독어독문전공</td><td>독일어</td><td style="text-align:center;">2명</td><td style="text-align:center;">2명</td></tr>
+          <tr><td>중어중문전공</td><td>중국어</td><td style="text-align:center;">3명</td><td style="text-align:center;">2명</td></tr>
+          <tr><td>사학과</td><td>역사</td><td style="text-align:center;">3명</td><td style="text-align:center;">2명</td></tr>
+          <tr><td>문헌정보학과</td><td>사서</td><td style="text-align:center;">3명</td><td style="text-align:center;">2명</td></tr>
+          <tr><td style="background:#eef1fb;font-weight:700;">예술체육대학</td><td>체육학과</td><td>체육</td><td style="text-align:center;">2명</td><td style="text-align:center;">2명</td></tr>
+          <tr><td rowspan="2" style="background:#eef1fb;font-weight:700;vertical-align:middle;">융합과학대학</td><td>수학과</td><td>수학</td><td style="text-align:center;">2명</td><td style="text-align:center;">2명</td></tr>
+          <tr><td>화학과</td><td>화학</td><td style="text-align:center;">3명</td><td style="text-align:center;">3명</td></tr>
+          <tr><td rowspan="4" style="background:#eef1fb;font-weight:700;vertical-align:middle;">관광문화대학</td><td>호텔경영전공</td><td>관광</td><td style="text-align:center;">2명</td><td style="text-align:center;">2명</td></tr>
+          <tr><td>관광문화콘텐츠학과</td><td>관광</td><td style="text-align:center;">1명</td><td style="text-align:center;color:var(--coral);font-weight:700;">0명 (폐지)</td></tr>
+          <tr><td>외식조리전공</td><td>조리</td><td style="text-align:center;">3명</td><td style="text-align:center;">2명</td></tr>
+          <tr><td>연기학과</td><td>연극영화</td><td style="text-align:center;">2명</td><td style="text-align:center;">2명</td></tr>
+          <tr style="background:#f4f6fb;font-weight:800;">
+            <td colspan="3" style="text-align:right;">합계</td>
+            <td style="text-align:center;color:var(--navy);">38명</td>
+            <td style="text-align:center;color:var(--navy);">30명</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#fff3cd;border-radius:8px;padding:9px 12px;margin-top:10px;font-size:12px;color:#7c4a03;">
+      ⚠ <strong>관광문화콘텐츠학과</strong>는 2028학년도부터 교직과정이 폐지 예정입니다. 해당 학과 재학생은 반드시 교직학과에 개인 상황을 확인하세요.
+    </div>
+  </div>
+</div>
+
+<!-- 이수절차 -->
+<div id="tab-process" class="tabc">
+  <h2 class="h-title"><i class="ti ti-map"></i>전체 이수 절차</h2>
+  <p class="h-sub">선발 시점과 무관하게 절차는 동일하며, 교직과목 학점만 22~24학점으로 차이가 있습니다.</p>
+
+  <div class="tl">
+    <div class="tl-item">
+      <div class="tl-time">📅 2학년 2학기 초 (매년 9월 중)</div>
+      <h4>① 교직과정 이수신청</h4>
+      <div class="desc">소정 기간 내 이수신청서를 소속 학과사무실에 제출합니다.</div>
+      <div class="tl-detail open" id="p1">
+        <div style="background:#eef1fb;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:12px;line-height:1.8;">
+          <strong style="color:var(--navy);">📅 실제 공지·제출 일정</strong><br>
+          · <strong>공지</strong>: 매년 <strong>8월 말~9월 초</strong> 학과 또는 학교 공지사항에 교직이수신청 안내 게시<br>
+          &nbsp;&nbsp;&nbsp;※ 교직 공지사항에 올라오지 않는 경우도 많으니 — 아래 링크에서 직접 확인 필수<br>
+          · <strong>제출</strong>: 9월 중 소속 학과사무실에 이수신청서 직접 제출 (소정 기간 엄수)<br>
+          · 기간 내 미제출 시 해당 학년도 신청 불가 — 공지 확인 즉시 바로 제출할 것<br>
+          <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&searchCnd=SJ&searchKrwd=%EA%B5%90%EC%A7%81" target="_blank" style="color:var(--navy);font-weight:700;">이수신청과 연관된 공지 확인하기 →</a>
+        </div>
+        <p>편입생(학사편입 포함)은 원칙적으로 신청이 불가합니다. 7호 기준 대상자(초등교사 자격증 소지자 등)는 별도 신청 없이 소정 과목 이수 후 무시험검정 신청이 가능합니다.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-time">📅 2학년 2학기 말 (12월 말~1월)</div>
+      <h4>② 이수예정자 선발</h4>
+      <div class="desc">2학년 2학기까지 4개 학기 성적 + 인성·적성·자질을 고려해 학과장 추천 → 총장 최종 결재로 선발됩니다.</div>
+      <div class="warn-box">⚠ 신청 후 휴학하면 선발 대상에서 제외됩니다. (단, 2학년 1·2학기 성적이 인정된 후 휴학하면 가능)</div>
+      <div class="tl-detail open" id="p2"><p>탈락한 학생이 이미 이수한 교직과목 학점은 자유선택 이수학점으로 졸업학점에 포함됩니다. 선발 인원은 교육부 승인 인원 내에서 결정됩니다.</p></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-time">📅 3~4학년 (지속)</div>
+      <h4>③ 전공 및 교직과목 이수</h4>
+      <div class="desc">전공과목 50학점 이상 + 교직과목(22~24학점) 이수를 3~4학년 동안 진행합니다.</div>
+      <div class="tl-detail open" id="p3"><p>교원자격증 취득을 위한 전공 50학점과 학과 졸업학점은 <strong>별도</strong>입니다. 두 조건을 모두 충족해야 합니다. 예: 국어국문학과는 교직용 전공 50학점 + 학과 졸업 전공 60학점을 각각 충족해야 합니다.</p></div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-time">📅 3~4학년 (지속)</div>
+      <h4>④ 전공 및 교직과목 이수 + 필수활동 병행</h4>
+      <div class="desc">전공·교직과목 이수와 함께, 아래 필수 활동도 이 기간 동안 병행해야 합니다.</div>
+      <div class="tl-detail open" id="p4">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;">
+          <div style="flex:1;min-width:220px;border:2px solid var(--navy);border-radius:10px;padding:12px 14px;background:#eef1fb;">
+            <div style="font-size:12px;font-weight:800;color:var(--navy);margin-bottom:8px;">📋 필수 활동 — 선발 후 4학년 종료 전까지</div>
+            <!-- 섹션 1: 검사·교육 -->
+            <div style="background:#e8edf8;border-radius:8px;padding:9px 11px;margin-bottom:8px;">
+              <div style="font-size:11px;font-weight:800;color:var(--navy);margin-bottom:6px;">🔍 검사 및 교육 — 각 2회 이상</div>
+              <div style="font-size:12px;line-height:1.85;">
+                <div>✅ <strong>적·인성검사</strong> 2회 이상 — 공지: 1학기 4~5월 / 2학기 10~11월</div>
+                <div>✅ <strong>심폐소생술(CPR)</strong> 2회 이상 — 적·인성검사 공지 시 함께 안내</div>
+                <div>✅ <strong>성인지교육</strong> 2회 이상 — 적·인성검사 공지 시 함께 안내</div>
+              </div>
+              <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&pageUnit=10&sf.pnos=1073&sf.pnos=888&searchCnd=SJ&searchKrwd=%EA%B5%90%EC%A7%81+%EC%A0%81%EC%9D%B8%EC%84%B1" target="_blank" style="display:inline-block;margin-top:7px;font-size:11.5px;font-weight:700;color:var(--navy);">📢 교직 적·인성 / CPR / 성인지교육 관련 공지 바로가기 →</a>
+            </div>
+            <!-- 섹션 2: 봉사·실습 -->
+            <div style="background:#e6f4ee;border-radius:8px;padding:9px 11px;">
+              <div style="font-size:11px;font-weight:800;color:#065f46;margin-bottom:6px;">🏫 봉사 및 실습</div>
+              <div style="font-size:12px;line-height:1.85;">
+                <div>✅ <strong>교육봉사</strong> 60시간 이상 — 4학년 2학기 종료 전까지 <span style="color:var(--coral);font-weight:700;">(교육봉사 수업 수강신청 필수)</span></div>
+                <div>✅ <strong>교육실습</strong> 4주 — 4학년 1학기 실시 <span style="color:var(--coral);font-weight:700;">(교육실습 수업 수강신청 필수)</span></div>
+              </div>
+            </div>
+            <div style="margin-top:8px;font-size:11.5px;color:var(--coral);font-weight:700;">⚠ 하나라도 미이수 시 자격증 취득 불가</div>
+            <button onclick="showTab('credit')" style="margin-top:10px;width:100%;padding:9px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;">📋 학점·이수조건 자세히 보기 →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item gold">
+      <div class="tl-time">📅 4학년 졸업 예정 학기 (2월 졸업 → 9월 초 / 8월 졸업 → 3월 초)</div>
+      <h4>⑤ 무시험검정 원서 제출 → 교원자격증 취득</h4>
+      <div class="desc">소속 학과사무실에 원서·성적증명서·학적부를 제출합니다. 서류심사를 통해 모든 요건 충족 여부를 확인합니다.</div>
+      <div class="warn-box">⚠ 제출 기간이 <strong>매우 짧습니다</strong> — 공지 후 수일 내 마감되므로 공지 즉시 확인하고 바로 제출해야 합니다.</div>
+      <div class="tl-detail open" id="p5">
+        <div style="background:#eef1fb;border-radius:8px;padding:10px 12px;margin-bottom:8px;font-size:12px;line-height:1.85;">
+          <strong style="color:var(--navy);">📅 졸업 시기별 공지·제출 일정</strong><br>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+            <div style="background:#fff;border-left:3px solid var(--navy);padding:8px 10px;border-radius:0 6px 6px 0;">
+              <div style="font-weight:800;color:var(--navy);margin-bottom:4px;">2월 졸업예정자</div>
+              <div>· <strong>공지</strong>: 8월 말</div>
+              <div>· <strong>제출 마감</strong>: <span style="color:var(--coral);font-weight:700;">9월 초 (극초)</span></div>
+            </div>
+            <div style="background:#fff;border-left:3px solid #059669;padding:8px 10px;border-radius:0 6px 6px 0;">
+              <div style="font-weight:800;color:#059669;margin-bottom:4px;">8월 졸업예정자</div>
+              <div>· <strong>공지</strong>: 2월 말</div>
+              <div>· <strong>제출 마감</strong>: <span style="color:var(--coral);font-weight:700;">3월 초</span></div>
+            </div>
+          </div>
+          <div style="margin-top:8px;color:#7c4a03;">⚠ 신청 기간이 극히 짧으므로 <strong>해당 학기 공지사항을 수시로 확인</strong>하세요.</div>
+          <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&pageUnit=10&sf.pnos=1073&sf.pnos=888&searchCnd=SJ&searchKrwd=%EB%AC%B4%EC%8B%9C%ED%97%98" target="_blank" style="display:inline-block;margin-top:8px;font-size:12px;font-weight:700;color:var(--navy);">📢 무시험검정 공지사항 바로가기 →</a>
+        </div>
+        <p>무시험검정은 서류심사로 진행됩니다. 전공·교직 학점, 성적, 봉사·실습, 적·인성검사 등 모든 요건을 충족해야 합격하며, <strong>학위 취득이 필수 조건</strong>입니다.</p>
+        <div style="margin-top:6px;font-size:12px;color:#555;">📝 제출 서류: 무시험검정원서 + 성적증명서 + 학적부 (학과사무실에서 확인)</div>
+        <div class="warn-box" style="margin-top:6px;">⚠ 졸업을 유예하면, 실제 졸업학기에 원서를 다시 제출해야 합니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 시기별 한눈에 보기 달력 -->
+  <div style="margin-top:28px;">
+    <div class="sec-label"><i class="ti ti-calendar-event"></i> 시기별 한눈에 보기 달력</div>
+    <p style="font-size:12px;color:var(--sub);margin-bottom:12px;">학년·학기별로 챙겨야 할 주요 일정을 한눈에 정리했습니다. <span style="color:var(--coral);font-weight:700;">⭐</span>는 마감·제출이 있는 중요 일정입니다. 교육봉사·교직과목 수강 시기는 개인별로 다를 수 있습니다.</p>
+    <div style="overflow-x:auto;border-radius:12px;border:1px solid var(--line);">
+      <table style="width:100%;min-width:720px;border-collapse:collapse;font-size:11.5px;">
+        <thead>
+          <tr style="background:var(--navy);color:#fff;">
+            <th style="padding:10px 12px;text-align:left;white-space:nowrap;border-right:1px solid rgba(255,255,255,.2);">학년 / 학기</th>
+            <th style="padding:10px 8px;text-align:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15);">3월</th>
+            <th style="padding:10px 8px;text-align:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15);">4–5월</th>
+            <th style="padding:10px 8px;text-align:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15);">6–7월</th>
+            <th style="padding:10px 8px;text-align:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15);">8월</th>
+            <th style="padding:10px 8px;text-align:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15);">9월</th>
+            <th style="padding:10px 8px;text-align:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15);">10–11월</th>
+            <th style="padding:10px 8px;text-align:center;white-space:nowrap;border-right:1px solid rgba(255,255,255,.15);">12–1월</th>
+            <th style="padding:10px 8px;text-align:center;white-space:nowrap;">2월</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- 1학년 -->
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="background:#eef1fb;font-weight:800;padding:10px 12px;vertical-align:middle;color:var(--navy);white-space:nowrap;border-right:1px solid var(--line);">1학년</td>
+            <td colspan="8" style="padding:10px 14px;color:#555;vertical-align:middle;">
+              교직과정 정보 탐색 &amp; 설명회 참석 · <strong>전 학기 학점 집중 관리</strong> (선발 심사 시 4개 학기 성적 반영)
+            </td>
+          </tr>
+          <!-- 2학년 1학기 -->
+          <tr style="background:#fafbfd;border-bottom:1px solid var(--line);">
+            <td style="background:#eef1fb;font-weight:800;padding:10px 12px;vertical-align:top;color:var(--navy);white-space:nowrap;border-right:1px solid var(--line);">2학년<br>1학기</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">교직과정<br>설명회 확인<br>학점 관리</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">학점 집중<br>관리</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#fff9e6;">
+              <span style="color:#7c4a03;font-weight:700;">8월 말</span><br>
+              교직이수신청<br>공지 예고<br>
+              <span style="font-size:10.5px;color:var(--sub);">미리 공지 확인</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;"></td>
+          </tr>
+          <!-- 2학년 2학기 -->
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="background:#eef1fb;font-weight:800;padding:10px 12px;vertical-align:top;color:var(--navy);white-space:nowrap;border-right:1px solid var(--line);">2학년<br>2학기</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#fff9e6;">
+              <span style="color:#7c4a03;font-weight:700;">8월 말</span><br>
+              교직이수신청<br>공지 확인<br>
+              <span style="font-size:10.5px;color:var(--sub);">공지사항 수시 확인</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#eef1fb;">
+              <span style="color:var(--coral);font-weight:700;">⭐ 9월 초</span><br>
+              <strong>교직이수신청서</strong><br>학과사무실 제출<br>
+              <span style="font-size:10.5px;color:var(--coral);">기간 내 미제출 = 신청 불가</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">학점 마무리<br>관리</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#fff9e6;">
+              <span style="color:#7c4a03;font-weight:700;">12~1월</span><br>
+              이수예정자<br>선발 발표
+            </td>
+            <td style="padding:8px;vertical-align:top;"></td>
+          </tr>
+          <!-- 3학년 1학기 -->
+          <tr style="background:#fafbfd;border-bottom:1px solid var(--line);">
+            <td style="background:#eef1fb;font-weight:800;padding:10px 12px;vertical-align:top;color:var(--navy);white-space:nowrap;border-right:1px solid var(--line);">3학년<br>1학기</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">
+              교직이론<br>과목 수강신청<br>
+              <span style="font-size:10.5px;color:var(--sub);">(교육학개론 등)</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#eef1fb;">
+              <span style="color:var(--coral);font-weight:700;">⭐ 4~5월</span><br>
+              적·인성검사 1회<br>CPR 교육 1회<br>성인지교육 1회
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">
+              교직소양 과목 이수<br>
+              <span style="font-size:10.5px;color:var(--sub);">(특수교육학개론 등)</span><br>
+              <span style="font-size:10.5px;color:var(--sub);">(개인별 상이)<br>교육봉사 시작 가능</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;"></td>
+          </tr>
+          <!-- 3학년 2학기 -->
+          <tr style="border-bottom:1px solid var(--line);">
+            <td style="background:#eef1fb;font-weight:800;padding:10px 12px;vertical-align:top;color:var(--navy);white-space:nowrap;border-right:1px solid var(--line);">3학년<br>2학기</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">
+              교직이론 과목<br>계속 이수<br>
+              <span style="font-size:10.5px;color:var(--sub);">(개인별 상이)<br>교육봉사 지속</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#eef1fb;">
+              <span style="color:var(--coral);font-weight:700;">⭐ 10~11월</span><br>
+              적·인성검사 2회<br>CPR 교육 2회<br>성인지교육 2회
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">
+              전공과목 점검<br>기본이수과목<br>이수 현황 확인
+            </td>
+            <td style="padding:8px;vertical-align:top;"></td>
+          </tr>
+          <!-- 4학년 1학기 -->
+          <tr style="background:#fafbfd;border-bottom:1px solid var(--line);">
+            <td style="background:#eef1fb;font-weight:800;padding:10px 12px;vertical-align:top;color:var(--navy);white-space:nowrap;border-right:1px solid var(--line);">4학년<br>1학기</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#eef1fb;">
+              <span style="color:var(--navy);font-weight:700;">3월</span><br>
+              <strong>교육실습</strong> 수강신청<br>
+              <strong>교육봉사</strong> 수강신청<br>
+              <span style="font-size:10.5px;color:var(--sub);">(대부분 이 학기에 수강)</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#eef1fb;">
+              <span style="color:var(--coral);font-weight:700;">⭐ 4~5월</span><br>
+              <strong>교육실습 4주</strong><br>적·인성검사<br>CPR·성인지교육
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">
+              교육봉사 시간<br>채우기<br>
+              <span style="font-size:10.5px;color:var(--sub);">전공과목 마무리</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;"></td>
+          </tr>
+          <!-- 4학년 2학기 -->
+          <tr>
+            <td style="background:#eef1fb;font-weight:800;padding:10px 12px;vertical-align:top;color:var(--navy);white-space:nowrap;border-right:1px solid var(--line);">4학년<br>2학기</td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);"></td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#fff3cd;">
+              <span style="color:var(--coral);font-weight:700;">⭐ 8월 말</span><br>
+              무시험검정<br>원서 공지 확인<br>
+              <span style="font-size:10.5px;color:#7c4a03;">(2월 졸업예정자)</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);background:#fff3cd;">
+              <span style="color:var(--coral);font-weight:700;">⭐ 9월 초</span><br>
+              <strong>무시험검정<br>원서 제출</strong><br>
+              <span style="font-size:10.5px;color:#7c4a03;">기간 극히 짧음!<br>공지 즉시 제출</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">
+              적·인성검사<br>최종 회차<br>교육봉사 완료<br>
+              <span style="font-size:10.5px;color:var(--sub);">60시간 이상 확인</span>
+            </td>
+            <td style="padding:8px;vertical-align:top;border-right:1px solid var(--line);color:#374151;">
+              졸업 요건<br>최종 점검
+            </td>
+            <td style="padding:8px;vertical-align:top;background:#dcfce7;text-align:center;">
+              <span style="color:#065f46;font-weight:800;font-size:13px;">2월 🎓</span><br>
+              <strong>졸업 &amp;<br>정교사(2급)<br>자격증 취득</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--sub);background:#f4f6fb;border-radius:8px;padding:8px 11px;line-height:1.7;">
+      ※ 위 일정은 <strong>2월 졸업(일반적 경우)</strong> 기준입니다. 8월 졸업 예정자는 무시험검정 공지가 2월 말, 제출이 3월 초입니다.<br>
+      ※ 적·인성검사·CPR·성인지교육은 선발 후 졸업 전까지 <strong>각 2회 이상</strong> 이수해야 합니다.<br>
+      ※ 교육봉사 수업 수강 시기는 개인별로 다를 수 있으나, <strong>대부분 4학년 1학기에 수강</strong>합니다.
+    </div>
+  </div>
+
+</div>
+
+<!-- 학점·조건 -->
+<div id="tab-credit" class="tabc">
+  <h2 class="h-title"><i class="ti ti-school"></i>전공·교직과목 이수 조건 및 필수활동</h2>
+  <p class="h-sub">교원자격증을 받으려면 ① 전공과목 ② 교직과목 ③ 필수활동, 이 세 영역을 모두 따로 충족해야 합니다. 전공과목·필수활동은 선발 시점과 무관하게 공통이며, 교직과목만 선발 시점에 따라 1과목(2학점) 차이가 있습니다.</p>
+
+  <div class="sec-label"><i class="ti ti-number-1" style="color:var(--navy);"></i> 전공과목 — 선발 시점과 무관, 공통</div>
+  <div class="card">
+    <h3>전공과목 (50학점 이상)</h3>
+    <div class="grid3" style="margin-top:8px;margin-bottom:6px;">
+      <div class="stat"><div class="lab">전공 총학점</div><div class="val">50학점↑</div></div>
+      <div class="stat"><div class="lab">기본이수과목</div><div class="val">21학점↑</div><div class="note" style="color:var(--sub);font-weight:600;">7과목 이상</div></div>
+      <div class="stat"><div class="lab">교과교육영역</div><div class="val">8학점↑</div><div class="note" style="color:var(--sub);font-weight:600;">3과목</div></div>
+    </div>
+    <div class="warn-box">교원자격증용 전공 50학점 ≠ 학과 졸업학점. 두 조건을 각각 충족해야 합니다. 이수구분이 '교양' 또는 타학과 전공인 과목은 소속학과 졸업 전공학점으로 인정되지 않습니다.</div>
+
+    <!-- 전공별 기본이수과목 링크 -->
+    <div style="margin-top:14px;margin-bottom:4px;font-size:13px;font-weight:800;color:var(--navy);">기본이수과목 (21학점 이상 / 7과목 이상)</div>
+    <p style="font-size:12px;color:var(--sub);margin-bottom:8px;">전공마다 이수해야 할 과목이 다릅니다. 내 전공을 선택하면 구체적인 과목 목록이 펼쳐집니다.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;" id="basicChips">
+      <button class="chip" onclick="toggleDeptSection('basic','korean')">국어</button>
+      <button class="chip" onclick="toggleDeptSection('basic','english')">영어</button>
+      <button class="chip" onclick="toggleDeptSection('basic','german')">독일어</button>
+      <button class="chip" onclick="toggleDeptSection('basic','chinese')">중국어</button>
+      <button class="chip" onclick="toggleDeptSection('basic','history')">역사</button>
+      <button class="chip" onclick="toggleDeptSection('basic','library')">사서</button>
+      <button class="chip" onclick="toggleDeptSection('basic','math')">수학</button>
+      <button class="chip" onclick="toggleDeptSection('basic','chemistry')">화학</button>
+      <button class="chip" onclick="toggleDeptSection('basic','pe')">체육</button>
+      <button class="chip" onclick="toggleDeptSection('basic','tourism')">관광</button>
+      <button class="chip" onclick="toggleDeptSection('basic','cooking')">조리</button>
+      <button class="chip" onclick="toggleDeptSection('basic','drama')">연극영화</button>
+    </div>
+    <div id="basic-detail" style="display:none;background:#f4f6fb;border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.85;margin-bottom:10px;border:1px solid var(--line);"></div>
+
+    <h3 style="margin-top:12px;">교과교육영역 3과목</h3>
+    <div class="chip-row">
+      <span class="chip req">교과교육론 (3학점)</span>
+      <span class="chip req">교재연구 및 지도법 (3학점)</span>
+      <span class="chip req">논리 및 논술 (3학점)</span>
+    </div>
+    <div class="detail-box open"><p><strong>교과교육론</strong> — 해당 학과에 개설된 과목을 수강해야 합니다. 미개설 시 '직자(교직자유선택)' 이수구분의 교과교육론을 수강할 수 있으나, 이 경우 소속학과 졸업 전공학점으로는 인정되지 않습니다.</p></div>
+    <div class="detail-box open"><p><strong>교재연구 및 지도법</strong> — 사서교사 이수예정자는 교과교육영역 전체를 이수할 필요가 없습니다. 교육실습은 실무실습(도서관실습)으로 대체됩니다.</p></div>
+    <div class="detail-box open"><p><strong>논리 및 논술</strong> — 이수구분 '직자(교직자유선택)'로 개설된 논리및논술을 수강합니다. 수학·체육 등 일부 표시과목은 별도 과목명으로 개설됩니다 (수학논리및논술, 체육논리및논술 등).</p></div>
+
+    <!-- 전공별 교과교육영역 링크 -->
+    <div style="margin-top:14px;margin-bottom:4px;font-size:13px;font-weight:800;color:var(--navy);">전공별 교과교육영역 과목명</div>
+    <p style="font-size:12px;color:var(--sub);margin-bottom:8px;">전공마다 과목명이 다릅니다. 내 전공을 선택하세요.</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;" id="eduChips">
+      <button class="chip" onclick="toggleDeptSection('edu','korean')">국어</button>
+      <button class="chip" onclick="toggleDeptSection('edu','english')">영어</button>
+      <button class="chip" onclick="toggleDeptSection('edu','german')">독일어</button>
+      <button class="chip" onclick="toggleDeptSection('edu','chinese')">중국어</button>
+      <button class="chip" onclick="toggleDeptSection('edu','history')">역사</button>
+      <button class="chip" onclick="toggleDeptSection('edu','library')">사서</button>
+      <button class="chip" onclick="toggleDeptSection('edu','math')">수학</button>
+      <button class="chip" onclick="toggleDeptSection('edu','chemistry')">화학</button>
+      <button class="chip" onclick="toggleDeptSection('edu','pe')">체육</button>
+      <button class="chip" onclick="toggleDeptSection('edu','tourism')">관광</button>
+      <button class="chip" onclick="toggleDeptSection('edu','cooking')">조리</button>
+      <button class="chip" onclick="toggleDeptSection('edu','drama')">연극영화</button>
+    </div>
+    <div id="edu-detail" style="display:none;background:#f4f6fb;border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.85;margin-bottom:4px;border:1px solid var(--line);"></div>
+  </div>
+
+  <div class="sec-label"><i class="ti ti-number-2" style="color:var(--navy);"></i> 교직과목 — 선발 시점에 따라 22~24학점</div>
+  <div class="card">
+    <h3><i class="ti ti-flag"></i> 나는 어느 기준에 해당할까?</h3>
+    <div class="grid2" style="margin-top:8px;">
+      <div class="stat" style="background:#eef2ff;border:1px solid var(--navy);">
+        <div class="val" style="font-size:17px;">2025-2학기 이후 선발자</div>
+        <div class="note" style="color:var(--sub);font-weight:600;margin-top:2px;">입학시점: 2024년 이후 입학</div>
+        <div class="note" style="color:var(--sub);font-weight:600;">교직과목 총 24학점</div>
+      </div>
+      <div class="stat" style="background:#fff7e6;border:1px solid var(--gold);">
+        <div class="val" style="font-size:17px;">2025-2학기 이전 선발자</div>
+        <div class="note" style="color:var(--sub);font-weight:600;margin-top:2px;">입학시점: 2024년 이전 입학(주로)</div>
+        <div class="note" style="color:var(--sub);font-weight:600;">교직과목 총 22학점</div>
+      </div>
+    </div>
+    <div class="warn-box" style="margin-top:8px;">⚠ 본인이 어느 선발 시점에 해당하는지 헷갈리면 반드시 공지를 확인하거나 아래 문의처에 연락하세요. 두 기준의 차이는 <strong>오직 '디지털교육(2학점)' 한 과목</strong>이며 (아래 교직소양 항목 참고), 그 외 교직이론·교육실습·성적기준 등 모든 조건은 완전히 동일합니다.</div>
+  </div>
+
+  <div class="card" style="border:2px solid var(--navy);">
+    <h3 style="color:var(--navy);">교직과목 구성 (2025-2학기 이후 선발자 = 24학점 기준)</h3>
+    <div class="grid3" style="margin-top:8px;">
+      <div class="stat"><div class="lab">교직이론</div><div class="val">12학점</div><div class="note" style="color:var(--sub);font-weight:600;">7과목 중 6과목</div></div>
+      <div class="stat"><div class="lab">교직소양</div><div class="val">8학점</div><div class="note" style="color:var(--sub);font-weight:600;">4과목 (이전 선발자는 6학점·3과목)</div></div>
+      <div class="stat"><div class="lab">교육실습</div><div class="val">4학점</div><div class="note" style="color:var(--sub);font-weight:600;">봉사+실습</div></div>
+    </div>
+
+    <h3 style="margin-top:12px;">교직이론 7과목 — 6과목(12학점) 이수 (탭하면 설명)</h3>
+    <div class="chip-row" id="theory-chips"></div>
+    <div id="theory-details"></div>
+    <div class="card" style="background:#f7f8fc;margin:8px 0 0;padding:10px 12px;">
+      <p style="margin:0;">위 7과목 중 6과목(12학점)만 이수하면 교직이론 요건은 충족됩니다. <strong>남는 1과목</strong>과, 경기대에서 추가로 들을 수 있는 <strong>선택형 교직이론 과목</strong>(다문화교육론·교사론·평생교육론 등)은 <strong>교육학 부전공</strong>을 함께 취득할 때 활용할 수 있어요.</p>
+      <button onclick="goToMinor()" style="margin-top:8px;width:100%;padding:9px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">교육학 부전공에서 자세히 보기 →</button>
+    </div>
+
+    <h3 style="margin-top:12px;">교직소양 — 2025-2학기 이후 선발자 4과목(8학점) / 이전 선발자 3과목(6학점)</h3>
+    <div class="chip-row">
+      <span class="chip req">생활지도및상담 (2학점)</span>
+      <span class="chip req">특수교육학개론 (2학점)</span>
+      <span class="chip req">교직실무 (2학점)</span>
+      <span class="chip req new">디지털교육 (2학점) ★신규</span>
+    </div>
+    <div class="detail-box open"><p>위 3과목(생활지도및상담·특수교육학개론·교직실무, 6학점)은 <strong>모든 선발자 공통 필수</strong>입니다. <strong>'디지털교육(2학점)'은 2025-2학기 이후 선발자(2024년 이후 입학)부터만 추가로 필수</strong>이며, 2025-2학기 이전 선발자는 이 과목 없이 교직소양 6학점만 이수하면 됩니다. — <strong>두 기준의 차이는 이 한 과목(2학점)뿐</strong>이고, 교직이론·교육실습·성적기준은 완전히 동일합니다.</p></div>
+  </div>
+
+  <div class="card">
+    <h3>성적 기준 — 공통</h3>
+    <div class="grid2" style="margin-top:8px;">
+      <div class="stat"><div class="lab">전공과목 평균</div><div class="val">75점↑</div></div>
+      <div class="stat"><div class="lab">교직과목 평균</div><div class="val">80점↑</div></div>
+    </div>
+    <p>두 선발 시점 모두 100점 만점 기준 위 점수 이상을 유지해야 무시험검정에 합격할 수 있습니다.</p>
+  </div>
+
+  <div class="sec-label"><i class="ti ti-number-3" style="color:var(--navy);"></i> 필수활동 — 선발 시점과 무관, 공통</div>
+  <div class="card">
+    <h3><i class="ti ti-run"></i> 필수 활동 이수</h3>
+    <p class="h-sub" style="margin-top:4px;">3~4학년 동안 아래 5가지를 모두 완료해야 합니다. 하나라도 빠지면 자격증을 받을 수 없어요.</p>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-time">매 학기 (3~4학년)</div>
+        <h4><i class="ti ti-heart-rate-monitor"></i> 교직 적성 및 인성검사 — 2회 이상</h4>
+        <div class="desc">반드시 '적격' 판정을 받아야 합니다.</div>
+        <div class="tl-detail open"><p>적격 판정을 받지 못하면 교원자격증 취득이 불가합니다. 3~4학년 중 학교가 지정한 일정에 따라 실시됩니다.</p>
+        <div style="background:#eef1fb;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.75;">
+          <strong style="color:var(--navy);">📅 실제 공지·실시 패턴 (최근 4년 기준)</strong><br>
+          · <strong>1학기 회차</strong> — 공지 4~5월 중 → 실시 4~6월 사이<br>
+          · <strong>2학기 회차</strong> — 공지 10~11월 중 → 실시 10~11월 사이<br>
+          공지가 뜨면 빠르게 신청해야 합니다. 공지 후 실시까지 간격이 짧습니다.<br>
+          <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&pageUnit=10&sf.pnos=1073&sf.pnos=888&searchCnd=SJ&searchKrwd=%EA%B5%90%EC%A7%81+%EC%A0%81%EC%9D%B8%EC%84%B1" target="_blank" style="color:var(--navy);font-weight:700;">📢 교직 적·인성검사 관련 공지 바로가기 →</a>
+        </div></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-time">매 학기 (3~4학년)</div>
+        <h4><i class="ti ti-first-aid-kit"></i> 응급처치 및 심폐소생술(CPR) — 2회 이상</h4>
+        <div class="desc">선발 시점과 무관한 공통 기준입니다.</div>
+        <div class="tl-detail open"><p>교직학과 공지를 통해 일정을 확인하고 이수해야 합니다. 무시험검정 합격요건에 포함되는 항목입니다.</p>
+        <div style="background:#eef1fb;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.75;">
+          <strong style="color:var(--navy);">📅 실제 공지·실시 패턴 (최근 4년 기준)</strong><br>
+          · <strong>1학기 회차</strong> — 공지 4~5월 중 → 실시 4~6월 사이<br>
+          · <strong>2학기 회차</strong> — 공지 10~11월 중 → 실시 10~11월 사이<br>
+          적·인성검사와 같은 공지문에 함께 안내됩니다. 공지 후 신청 마감이 빠르니 바로 확인하세요.<br>
+          <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&pageUnit=10&sf.pnos=1073&sf.pnos=888&searchCnd=SJ&searchKrwd=%EC%9D%91%EA%B8%89%EC%B2%98%EC%B9%98" target="_blank" style="color:var(--navy);font-weight:700;">📢 응급처치 검색 → 부서(학사혁신팀) 작성 공지 확인 →</a>
+        </div></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-time">매 학기 (3~4학년)</div>
+        <h4><i class="ti ti-gender-bigender"></i> 성인지교육 — 2회 이상</h4>
+        <div class="desc">선발 시점과 무관한 공통 기준입니다.</div>
+        <div class="tl-detail open"><p>성범죄 조회 및 마약류 검사 결과도 무시험검정 신청 시 함께 제출해야 합니다.</p>
+        <div style="background:#eef1fb;border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;line-height:1.75;">
+          <strong style="color:var(--navy);">📅 실제 공지·실시 패턴 (최근 4년 기준)</strong><br>
+          · <strong>1학기 회차</strong> — 공지 4~5월 중 → 실시 4~6월 사이<br>
+          · <strong>2학기 회차</strong> — 공지 10~11월 중 → 실시 10~11월 사이<br>
+          적·인성검사, CPR과 동일한 공지문에 함께 안내됩니다. 공지 제목에 '성인지교육'이 포함되어 있으니 아래에서 검색하세요.<br>
+          <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&pageUnit=10&sf.pnos=1073&sf.pnos=888&searchCnd=SJ&searchKrwd=%EC%84%B1%EC%9D%B8%EC%A7%80%EA%B5%90%EC%9C%A1" target="_blank" style="color:var(--navy);font-weight:700;">📢 성인지교육 관련 공지 바로가기 →</a>
+        </div></div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-time">교직과정 진입 ~ 4학년 2학기 종료 전</div>
+        <h4><i class="ti ti-heart-handshake"></i> 교육봉사 — 60시간 이상</h4>
+        <div class="desc">유·초·중·고 학생을 대상으로 한 교육적 활동이어야 인정됩니다.</div>
+        <div class="warn-box">⚠ 청소·환경미화·서류정리·OT 참가 시간은 인정되지 않습니다.</div>
+        <div class="tl-detail open">
+          <p><strong>인정 활동</strong>: 교과목 지도, 특기적성 지도, 학습부진아 지도, 멘토링, 돌봄 교실, 방과 후 지도, 체험학습 지원 등</p>
+          <p style="margin-top:6px;"><strong>신청 절차</strong>: 활동 전 교육혁신처 학사혁신팀에 교육봉사동의서를 제출하고 허가를 받아야 합니다. 봉사 기관은 학생이 직접 섭외합니다.</p>
+          <p style="margin-top:6px;"><strong>마무리 절차</strong>: 60시간이 채워지는 학기 또는 그 이후 학기에 반드시 '교육봉사' 수업을 수강신청하고, 해당 학기말까지 활동 소감문과 봉사활동 확인서(시간 확인서)를 학사혁신팀에 제출해야 인정됩니다.</p>
+          <p style="margin-top:6px;"><strong>봉사 기관 찾기</strong>: <a href="https://www.1365.go.kr/" target="_blank">1365 자원봉사포털</a> 또는 <a href="https://www.kyonggi.ac.kr/voluntaryCenter/contents.do?key=7811" target="_blank">경기대 사회봉사센터</a>에서 인근 학교·교육기관의 교육봉사 모집 공고를 검색해 직접 신청할 수 있습니다.</p>
+          <p style="margin-top:6px;"><strong>📢 공지 확인 방법:</strong> 매 학기 초(3월·9월) 공지사항에서 '교육봉사'로 검색해 동의서 제출 일정을 확인하세요.<br>
+          <span style="color:#b45309;font-size:11.5px;">※ 부서가 <strong>학사혁신팀</strong> 또는 <strong>교직학과</strong>에서 작성한 공지를 확인해야 합니다.</span><br>
+          <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&pageUnit=10&sf.pnos=1073&sf.pnos=888&searchCnd=SJ&searchKrwd=%EA%B5%90%EC%9C%A1%EB%B4%89%EC%82%AC" target="_blank" style="color:var(--navy);font-weight:700;">📢 교육봉사 관련 공지 바로가기 →</a></p>
+        </div>
+      </div>
+
+      <div class="tl-item gold">
+        <div class="tl-time">4학년 1학기 4~5월 (7학기 이상 재학자)</div>
+        <h4><i class="ti ti-school"></i> 교육실습 — 4주</h4>
+        <div class="desc">7학기 이상 재학 중인 학생만 실시할 수 있습니다.</div>
+        <div class="warn-box">⚠ 3학년 2학기에 동의서 제출 필수</div>
+        <div class="tl-detail open">
+          <p>교육실습학교는 학생이 직접 섭외하는 것이 원칙입니다. 매 학년도 2학기 초(9월 중) 교직과정 홈페이지 공고문을 확인한 뒤 학사혁신팀을 방문해 동의서·실습허가 공문을 받으세요. 복수전공자는 주전공으로 1회만 실시합니다.</p>
+          <p style="margin-top:6px;"><strong>수강신청 필수</strong>: 실습을 나가는 학기에는 반드시 '교육실습' 교과목을 함께 수강신청해야 학점(4학점)이 인정됩니다.</p>
+          <p style="margin-top:6px;"><strong>📢 공지 확인 방법:</strong> 교육실습 신청은 <strong>직전 학기 2학기 초(9월 중)</strong>에 공고됩니다. 공지사항에서 '교육실습'으로 검색하세요.<br>
+          <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&pageUnit=10&sf.pnos=1073&sf.pnos=888&searchCnd=SJ&searchKrwd=%EA%B5%90%EC%9C%A1%EC%8B%A4%EC%8A%B5" target="_blank" style="color:var(--navy);font-weight:700;">📢 교육실습 관련 공지 바로가기 →</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 학과별 검색 -->
+<div id="tab-dept" class="tabc">
+  <h2 class="h-title"><i class="ti ti-books"></i>학과별 표시과목 안내</h2>
+  <p class="h-sub">학과명 또는 표시과목(예: 국어, 영어, 화학, 관광)을 입력해 우리 학과의 기본이수·교과교육영역 과목을 확인하세요.</p>
+  <input class="search-input" type="text" id="deptInput" placeholder="학과명 또는 표시과목 검색" oninput="filterDepts()">
+  <div id="dept-list"></div>
+  <div class="card" style="background:#f7f8fc;">
+    <h3><i class="ti ti-help-circle"></i> 우리 학과가 안 보인다면?</h3>
+    <p>표시과목 인정 범위는 매년 조정될 수 있습니다. 공지를 꼭 확인하고, 궁금한 점은 아래 문의처로 연락하세요.</p>
+  </div>
+</div>
+
+<!-- 선배 이수 사례 -->
+<div id="tab-cases" class="tabc">
+  <h2 class="h-title"><i class="ti ti-users"></i>선배 이수 사례</h2>
+  <p class="h-sub">실제 교직이수를 완료한 선배들의 학점이수표를 분석한 결과입니다. <strong>입학연도가 아닌 교직과정 선발 시기를 기준</strong>으로 정리했습니다 — 군복무·휴학 등으로 선발 시기가 입학연도와 다를 수 있기 때문입니다.</p>
+
+  <!-- 선발 기준 설명 박스 -->
+  <div style="background:#fff3cd;border-radius:10px;padding:11px 14px;margin-bottom:14px;font-size:12.5px;border:1px solid #fed7aa;line-height:1.8;">
+    <strong>📌 이 탭의 시기 기준</strong><br>
+    아래 모든 시기는 <strong>"교직과정 이수예정자로 선발된 시점"</strong>을 기준으로 표시합니다.<br>
+    군복무·휴학 등으로 입학연도와 실제 학년이 달라도 <strong>"내가 선발된 게 언제인지"</strong>를 기준으로 보면 됩니다.
+  </div>
+
+  <!-- 전공 필터 -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;" id="caseFilterRow">
+    <button class="grade-btn on" onclick="filterCase('all',this)">전체</button>
+    <button class="grade-btn" onclick="filterCase('korean',this)">국어</button>
+    <button class="grade-btn" onclick="filterCase('english',this)">영어</button>
+    <button class="grade-btn" onclick="filterCase('german',this)">독일어</button>
+    <button class="grade-btn" onclick="filterCase('chinese',this)">중국어</button>
+    <button class="grade-btn" onclick="filterCase('history',this)">역사</button>
+    <button class="grade-btn" onclick="filterCase('library',this)">사서</button>
+    <button class="grade-btn" onclick="filterCase('math',this)">수학</button>
+    <button class="grade-btn" onclick="filterCase('chemistry',this)">화학</button>
+    <button class="grade-btn" onclick="filterCase('pe',this)">체육</button>
+    <button class="grade-btn" onclick="filterCase('tourism',this)">관광·조리</button>
+    <button class="grade-btn" onclick="filterCase('drama',this)">연극영화</button>
+  </div>
+
+  <!-- 전체 공통 인사이트 -->
+  <div class="card" style="background:linear-gradient(135deg,#eef1fb 0%,#fff 100%);border:1.5px solid var(--navy);">
+    <h3 style="color:var(--navy);"><i class="ti ti-bulb"></i> 선배들이 가장 많이 택한 이수 흐름</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin-top:8px;">
+      <div style="background:#fff;border-left:4px solid #1e40af;padding:9px 12px;border-radius:6px;">
+        <div style="font-size:12px;font-weight:800;color:#1e40af;margin-bottom:4px;">📍 선발 전 (일부 전공)</div>
+        <div style="font-size:12.5px;font-weight:700;">교육학개론 등 미리 수강</div>
+        <div style="font-size:11.5px;color:#666;">수학과·연기학과 선배 일부 — 선발 탈락 시 자유선택 인정</div>
+      </div>
+      <div style="background:#fff;border-left:4px solid var(--navy);padding:9px 12px;border-radius:6px;">
+        <div style="font-size:12px;font-weight:800;color:var(--navy);margin-bottom:4px;">📍 3학년 1학기 (선발 직후 학기)</div>
+        <div style="font-size:12.5px;font-weight:700;">교육학개론·교육심리·교육사회</div>
+        <div style="font-size:11.5px;color:#666;">2~3과목 동시 시작이 가장 많음</div>
+      </div>
+      <div style="background:#fff;border-left:4px solid #059669;padding:9px 12px;border-radius:6px;">
+        <div style="font-size:12px;font-weight:800;color:#059669;margin-bottom:4px;">📍 3학년 2학기 (선발 1년 후)</div>
+        <div style="font-size:12.5px;font-weight:700;">교직실무·생활지도및상담·교육봉사</div>
+        <div style="font-size:11.5px;color:#666;">소양 과목 집중 + 봉사 활동 시작</div>
+      </div>
+      <div style="background:#fff;border-left:4px solid var(--coral);padding:9px 12px;border-radius:6px;">
+        <div style="font-size:12px;font-weight:800;color:var(--coral);margin-bottom:4px;">📍 4학년 1학기 (선발 2년 후)</div>
+        <div style="font-size:12.5px;font-weight:700;">교육실습 (4~5월)</div>
+        <div style="font-size:11.5px;color:#666;">거의 모든 선배 동일 — 4주간</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 들어야 하는 과목 전체 정리 -->
+  <div class="card case-card" data-major="all">
+    <h3><i class="ti ti-list-check"></i> 교직과목 전체 이수 목록 (2024년 이후 입학 기준 — 24학점)</h3>
+    <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">아래가 졸업 전까지 반드시 이수해야 하는 교직과목 전체입니다. 어떤 과목이 있는지 먼저 파악하세요.</p>
+    <div style="overflow-x:auto;">
+      <table class="prof-table">
+        <thead><tr><th>영역</th><th>과목명</th><th>학점</th><th>필수여부</th><th style="min-width:140px;">선배들 주요 수강 시기<br><small style="font-weight:400;color:#b0bbdc;">■ 많이 수강 &nbsp;□ 드묾</small></th></tr></thead>
+        <tbody>
+          <tr><td rowspan="7" style="background:#eef1fb;font-weight:700;vertical-align:middle;">교직이론<br><small>(12학점,<br>7과목 중 6과목)</small></td><td>교육학개론 (ZB201)</td><td>2</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-2</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div><div style="font-size:10px;color:var(--sub);margin-top:2px;">주로 3학년 1학기</div></td></tr>
+          <tr><td>교육심리 (ZB203)</td><td>2</td><td>7과목 중</td><td><div style="display:flex;gap:3px;"><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div><div style="font-size:10px;color:var(--sub);margin-top:2px;">선발 직후 학기부터</div></td></tr>
+          <tr><td>교육사회 (ZB204)</td><td>2</td><td>6과목</td><td><div style="display:flex;gap:3px;"><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td>교육철학및교육사 (ZB003)</td><td>2</td><td>선택</td><td><div style="display:flex;gap:3px;"><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td>교육과정및평가 (ZB301)</td><td>2</td><td></td><td><div style="display:flex;gap:3px;"><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td>교육방법및교육공학 (ZB005)</td><td>2</td><td></td><td><div style="display:flex;gap:3px;"><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td>교육행정및교육경영 (ZB006)</td><td>2</td><td></td><td><div style="display:flex;gap:3px;"><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-2</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div><div style="font-size:10px;color:var(--sub);margin-top:2px;">4학년 1학기 많음</div></td></tr>
+          <tr><td rowspan="4" style="background:#dcfce7;font-weight:700;vertical-align:middle;">교직소양<br><small>(8학점,<br>4과목 필수)</small></td><td>생활지도및상담 (ZB209)</td><td>2</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div><div style="font-size:10px;color:var(--sub);margin-top:2px;">선발 1년 후 학기</div></td></tr>
+          <tr><td>특수교육학개론 (ZB008)</td><td>2</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-2</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td>교직실무 (ZB007)</td><td>2</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td><strong>디지털교육 (신설)</strong></td><td>2</td><td><strong>필수</strong><br><small>2024~</small></td><td><span style="font-size:11px;color:#aaa;">데이터 수집 중</span></td></tr>
+          <tr><td rowspan="2" style="background:#fef9c3;font-weight:700;vertical-align:middle;">교육실습<br><small>(4학점)</small></td><td>교육봉사 (ZB406) — 60시간</td><td>2</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div><div style="font-size:10px;color:var(--sub);margin-top:2px;">봉사 완료 후 수강신청</div></td></tr>
+          <tr><td>교육실습 (ZB403) — 4주</td><td>2</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-2</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td rowspan="3" style="background:#fde8d8;font-weight:700;vertical-align:middle;">교과교육<br>영역<br><small>(전공별 상이)</small></td><td>○○교육론</td><td>3</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td>○○교재연구및지도법</td><td>3</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-1</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">3-2</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr><td>논리및논술 (또는 ○○논리및논술)</td><td>3</td><td>필수</td><td><div style="display:flex;gap:3px;"><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">3-2</span><span style="background:var(--navy);color:#fff;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;white-space:nowrap;">4-1</span><span style="background:#e5e7eb;color:#aaa;padding:2px 7px;border-radius:4px;font-size:10px;white-space:nowrap;">4-2</span></div></td></tr>
+          <tr style="background:#f4f6fb;"><td colspan="2" style="font-weight:700;">교직 필수 합계</td><td style="font-weight:700;">24학점</td><td colspan="2" style="font-size:11px;color:var(--sub);">+ 교과교육영역 8학점 (전공별 과목명 상이)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="background:#eef1fb;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:12px;line-height:1.75;">
+      <strong>📌 교과교육영역 과목명은 전공마다 다릅니다:</strong> ○○교육론·○○교재연구및지도법·논리및논술은 위 표의 교과교육영역 항목이며, <strong>실제 과목명은 소속 학과 교육과정을 확인</strong>하세요 (예: 국어교육론, 국어교재연구및지도법, 논리및논술 ZD475). 전공에 따라 추가 자유선택 과목(교사론·평생교육론 등)도 이수합니다.
+    </div>
+  </div>
+
+  <!-- 전공별 사례 카드들 -->
+  <div class="case-card" data-major="korean">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 국어 — 국어국문학과 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육심리, 교육사회</td><td>국어교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육철학및교육사, 교육봉사</td><td>국어교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 교육행정및교육경영, 특수교육학개론</td><td><strong>논리및논술(ZD475)</strong></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육과정및평가</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (4분야 7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          선배들이 실제로 이수한 조합 (2026교육과정 기준 과목명):<br>
+          <strong>① 국어학 분야:</strong> 한국어학의이해 / 한국어문법론 / 한국어의역사 중 1과목 이상<br>
+          <strong>② 문학 분야:</strong> 한국현대문학의이해 / 고전문학사의라이벌·한국문학사와예술사 중 택1<br>
+          <strong>③ 문학교육론 분야:</strong> 한국현대시론 / 한국현대소설론 중 택1<br>
+          <strong>④ 의사소통교육론 분야:</strong> 한국어와대중매체 / 한국어의의미와화용 중 택1<br>
+          <br>
+          → 4개 분야에서 각 1과목 이상, 총 7과목 21학점 이상을 채워야 합니다.<br>
+          <span style="color:var(--coral);">⚠ 대부분 3~4학년에 교직·전공을 병행하며 이수. 2학년부터 미리 챙기는 것을 강력 권장.</span>
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 국어교육론·국어교재연구및지도법·논리및논술은 모두 '직자(교직자유선택)' 이수구분 — 졸업 전공학점에 포함 안 될 수 있으니 반드시 확인.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="english">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 영어 — 영어영문학과 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육심리, 교육사회, 교육과정및평가</td><td>영어교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 교육철학및교육사</td><td>영어교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 특수교육학개론, 교육행정및교육경영</td><td><strong>논리및논술(ZD475)</strong></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교직실무(미이수 시)</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          선배들이 실제로 이수한 조합 (2026교육과정 기준):<br>
+          영어학개론 / 영어문법1·2 중 택1 / 실용영어회화1·2 중 택1 / 영어작문1·2 중 택1 / 고급영어독해 / 영어음성학·영어음운론 중 택1 / 영미문화 / 영문학개론<br>
+          <br>
+          → 7과목 21학점 이상 충족. 선배들은 2~3학년에 걸쳐 이수.<br>
+          <span style="color:var(--coral);">⚠ 영어영문학과 졸업 이수학점이 많으므로 기본이수과목을 2학년부터 전략적으로 수강할 것.</span>
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 영어교육론·영어교재연구및지도법·논리및논술 모두 '직자' 이수구분 — 졸업 전공학점 미포함. 논리및논술은 선발 2년 후 1학기(4학년 1학기)에 이수한 선배가 가장 많음.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="german">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 독일어 — 독어독문전공 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 2명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육심리, 교육사회</td><td>독일어교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 교육철학및교육사</td><td>독일어교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 특수교육학개론, 교육행정및교육경영</td><td><strong>논리및논술(ZD475)</strong></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육과정및평가</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          독어학의이해 / 독일명작의이해 / 독일어문법1·2 중 택1 / 독일어회화1·2·3 중 택1 / 독일어작문 / 독일문학비평 / 독일문화와사회 / 독문번역연습<br>
+          → 7과목 21학점 이상 이수. 선배들은 대부분 3학년에 병행 이수.
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 독일어교육론·교재연구및지도법·논리및논술 모두 '직자' — 졸업 전공학점 미포함. 논리및논술은 선발 2년 후 1학기(4학년 1학기)에 이수 가장 많음. 교육학부전공 병행 학생 많음.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="chinese">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 중국어 — 중어중문전공 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육심리, 교육사회</td><td>중국어교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 교육철학및교육사</td><td>중국어교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 특수교육학개론, 교육행정및교육경영</td><td><strong>논리및논술(ZD475)</strong></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육과정및평가</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          중국문학의이해 / 실용중국어어법 / 중급중국어회화연습·고급중국어회화 중 택1 / 중국어AI번역작문 / 중국사회문화입문·중국사회문화주제별탐구 중 택1 / 중국어학의이해 / 중급중국어강독·고급중국어강독 중 택1 / 제자백가의이해<br>
+          → 7과목 21학점 이상. 경영학 복수전공 병행 선배가 많아 학점 배분에 주의 필요.
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 중국어교육론·교재연구및지도법·논리및논술 모두 '직자' — 졸업 전공학점 미포함. 경영학 복수전공 병행 학생 많으므로 학점 관리 중요.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="history">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 역사 — 사학과 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육심리, 교육사회, 특수교육학개론</td><td>역사교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 교육철학및교육사</td><td>역사교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 교육행정및교육경영</td><td><strong>논리및논술(ZD475)</strong></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육과정및평가</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (5분야 7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          <strong>① 역사학방법론:</strong> 역사학입문 / 한국사입문 / 동아시아사입문 / 서양사입문 중 택1<br>
+          <strong>② 한국사:</strong> 한국고대사 / 한국중세사 / 한국근세사 / 한국근대사 중 택1<br>
+          <strong>③ 세계사:</strong> 동아시아고대사·중세사·근세사 / 서양고대사·중세사·서양근현대사 / 미국사 중 택1<br>
+          <strong>④ 분야사:</strong> 조선왕조궁궐사·지역사와박물관 중 택1<br>
+          <strong>⑤ 현대사:</strong> 한국현대사 / 동아시아현대사 / 서양현대사 중 택1<br>
+          → 5분야에서 7과목 21학점 이상. 선배들은 주로 2~3학년에 분산 이수.
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 역사교육론·교재연구및지도법·논리및논술 모두 '직자' — 졸업 전공학점 미포함. 졸업 이수학점이 많으므로 2학년부터 기본이수과목 이수 시작 권장.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="library">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 사서 — 문헌정보학과 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육심리, 교육사회</td><td rowspan="4" style="vertical-align:top;background:#fff3cd;padding:8px;font-size:11.5px;"><strong>⚠ 사서교사 특이사항</strong><br>교과교육영역 불필요<br>논리및논술도 해당사항 없음<br>교육실습→도서관실습 대체<br>총 약 20학점</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 교육철학및교육사</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td>특수교육학개론, 교육행정및교육경영</td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육과정및평가</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          정보자원분류론 / 정보자원목록론 / 디지털도서관 / 독서교육 / 정보검색론 / 정보서비스론 / 학교도서관경영 / 정보미디어론<br>
+          → 이 중 7과목 21학점 이상. 전공 과목과 대부분 겹쳐 비교적 부담이 적은 편.
+        </div>
+      </details>
+      <div style="background:#fff3cd;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;color:#7c4a03;">
+        ⚠ 사서교사는 교과교육영역·논리및논술 이수 불필요, 교육실습→도서관실습 대체. 반드시 교직학과 개별 상담 필수.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="math">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 수학 — 수학과 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>선발 전 ~ 선발 직전 학기<br><small>(일부 선배)</small></td><td>교육학개론·교육심리 미리 수강</td><td>-</td></tr>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육심리, 교육사회, 교육철학및교육사</td><td>수학교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 특수교육학개론</td><td>수학교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 교육행정및교육경영</td><td><strong>수학논리및논술</strong><br><small>(ZD475 대신 이수)</small></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육과정및평가</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          정수론 / 복소해석학1·2 중 택1 / 해석학·고급해석학 중 택1 / 선형대수1·2 중 택1 / 현대대수학1·2 중 택1 / 미분기하학1·2 중 택1 / 위상수학1·2 중 택1 / 확률론·수리통계학 중 택1 / 기하학일반 / 조합및그래프이론<br>
+          → 7과목 21학점 이상. 수학과는 전공과목이 많아 기본이수과목 대부분이 이미 전공 이수에 포함됨.
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 수학교육론·수학교재연구및지도법·수학논리및논술 모두 '직자' — 졸업 전공학점 미포함. 수학과는 기본이수과목 부담이 커 선발 전부터 교직과목을 미리 시작하는 선배가 많음.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="chemistry">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 화학 — 화학과 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 특수교육학개론, 교육심리, 교육사회</td><td>과학교육론(직자)</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 교육철학및교육사</td><td>과학교재연구및지도법(직자)</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 교육행정및교육경영</td><td><strong>논리및논술(ZD475, 직자)</strong></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교직실무(미이수 시)</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (8분야 중 7분야 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          ① 물리화학: 물리화학1·2<br>
+          ② 유기화학: 유기화학1·2<br>
+          ③ 무기화학: 무기화학1·2<br>
+          ④ 분석화학: 분석화학1및실험<br>
+          ⑤ 물리화학실험: 물리화학실험<br>
+          ⑥ 유기화학실험: 유기화학실험<br>
+          ⑦ 무기화학실험: 무기화학실험<br>
+          ⑧ 분석화학실험: 분석화학2및실험<br>
+          → 8분야 중 7분야 이상에서 21학점. 화학과 전공 과목과 대부분 겹침. 선배들은 2~3학년에 걸쳐 이수.
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 과학교육론·과학교재연구및지도법·논리및논술 모두 '직자' — 졸업 전공학점 미포함. 8분야 기본이수 충족이 필수라 전공 부담이 크므로 교직과목을 학기별로 전략 배분 필요.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="pe">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 체육 — 체육학과 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육심리, 교육사회</td><td>체육교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 특수교육학개론</td><td>체육교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 교육행정및교육경영</td><td><strong>체육논리및논술</strong><br><small>(ZD475 대신 이수)</small></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육철학및교육사</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          체육사·철학 / 스포츠심리학 / 스포츠사회학 / 운동생리학 / 운동역학 / 운동실기 / 체육측정평가 / 건강교육 / 무용교육 / 특수체육 / 여가레크리에이션 / 응급처치와심폐소생술<br>
+          → 이 중 7과목 21학점 이상. 대부분 체육학과 필수 전공과목과 겹쳐 추가 부담 적음.
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 체육교육론·체육교재연구및지도법·체육논리및논술 모두 '직자' — 졸업 전공학점 미포함. 실기 수업 많아 이론 교직과목을 학기별로 분산 배치하는 것이 효과적.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="tourism">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 관광·조리 — 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 7명 (호텔경영·관광이벤트·외식조리 전공)</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역 (직자)</th></tr></thead>
+        <tbody>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육심리, 교육사회</td><td>관광교육론(ZD472) 또는 조리교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사, 교육철학및교육사</td><td>관광교재연구및지도법(ZD002) 또는 조리교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 특수교육학개론, 교육행정및교육경영</td><td><strong>논리및논술(ZD475)</strong></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육과정및평가</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          <strong>관광(호텔경영·관광이벤트):</strong><br>
+          관광학원론 / 여행사경영론 / 호텔경영론 / 관광교통과모빌리티 / 관광자원개발론 / 관광법규 / 컨벤션실무론·컨벤션산업론 중 택1<br><br>
+          <strong>조리(외식조리):</strong><br>
+          식품과조리과학 / 한식조리실기1 / 중급서양조리실습 / 제과제빵실기 / 단체급식론 / 영양학 / 식품위생과법규<br><br>
+          → 7과목 21학점 이상. 전공 필수과목과 겹치는 경우가 많음.
+        </div>
+      </details>
+      <div style="background:#fff3cd;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;color:#7c4a03;">
+        ⚠ 관광교육론·교재연구및지도법 / 조리교육론·교재연구및지도법·논리및논술 모두 '직자' — 졸업 전공학점 미포함. 전공 졸업학점을 별도로 충족해야 합니다.
+      </div>
+    </div>
+  </div>
+
+  <div class="case-card" data-major="drama">
+    <div class="card">
+      <h3><i class="ti ti-book"></i> 연극영화 — 연기학과 선배 이수 패턴</h3>
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">분석 대상: 3명</p>
+      <div style="overflow-x:auto;"><table class="prof-table">
+        <thead><tr><th>시기<br><small>(학년·학기 기준)</small></th><th>교직과목</th><th>교과교육영역</th></tr></thead>
+        <tbody>
+          <tr><td>선발 전 ~ 선발 직전 학기<br><small>(일부 선배)</small></td><td>교육학개론 등 미리 수강</td><td>-</td></tr>
+          <tr><td>3학년 1학기<br><small>(선발 직후 학기)</small></td><td>교육학개론, 교육사회, 교육심리</td><td>연극교육론</td></tr>
+          <tr><td>3학년 2학기<br><small>(선발 1년 후)</small></td><td>교직실무, 생활지도및상담, 교육봉사</td><td>연극교재연구및지도법</td></tr>
+          <tr><td>4학년 1학기<br><small>(선발 2년 후)</small></td><td><strong>교육실습</strong>, 특수교육학개론, 교육행정및교육경영</td><td><strong>논리및논술(ZD475)</strong></td></tr>
+          <tr><td>4학년 2학기<br><small>(선발 2년 후)</small></td><td>교육방법및교육공학, 교육과정및평가</td><td>-</td></tr>
+        </tbody>
+      </table></div>
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer;font-size:12.5px;font-weight:700;color:var(--navy);padding:8px 12px;background:#eef1fb;border-radius:8px;">📚 기본이수과목 실제 이수 조합 보기 (7과목 21학점)</summary>
+        <div style="padding:10px 12px;font-size:12px;line-height:1.8;border:1px solid var(--line);border-top:none;border-radius:0 0 8px 8px;">
+          세계연기예술사 / 공연예술의이론과실제 / 화법의실제 / 공연제작종합설계3·다원제작워크숍 중 택1 / 연기실습워크숍1·2·3·4 중 택1 / 스토리텔링창작워크숍 / 매체연기워크숍<br>
+          → 7과목 21학점 이상. 연기학과 전공 실기과목과 병행 이수하는 패턴.
+        </div>
+      </details>
+      <div style="background:#f4f6fb;border-radius:8px;padding:9px 12px;margin-top:8px;font-size:12px;">
+        💡 연극교육론·연극교재연구및지도법·논리및논술 모두 '직자' — 졸업 전공학점 미포함. 실기 수업이 많아 교직 이론과목을 선발 직후부터 집중 이수하는 것이 효과적.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="background:#f7f8fc;margin-top:8px;" data-major="all">
+    <p style="margin:0;font-size:12px;color:var(--sub);">※ 위 사례는 실제 선배들의 학점이수표를 분석한 결과이며, 개인별 수강 순서는 다를 수 있습니다. 정확한 이수 계획은 아래 문의처에서 상담받으세요.</p>
+  </div>
+</div>
+
+<!-- 학년별 일정 달력 -->
+<div id="tab-calendar" class="tabc">
+  <h2 class="h-title"><i class="ti ti-calendar-event"></i>학년별 월별 이수 일정</h2>
+  <p class="h-sub">교직이수 전 과정을 학년·월별로 정리했습니다. 여기서 "학년"은 <strong>교직과정 선발 시점(2학년 2학기)을 기준</strong>으로 합니다. 군복무·휴학 등으로 입학연도와 실제 학년이 다르더라도 선발 시점 기준으로 참고하세요.</p>
+
+  <!-- 학년 필터 -->
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+    <button class="grade-btn on" onclick="filterGrade('all',this)">전체 보기</button>
+    <button class="grade-btn" onclick="filterGrade('1',this)">1학년</button>
+    <button class="grade-btn" onclick="filterGrade('2',this)">2학년</button>
+    <button class="grade-btn" onclick="filterGrade('3',this)">3학년</button>
+    <button class="grade-btn" onclick="filterGrade('4',this)">4학년</button>
+  </div>
+
+  <!-- 1학년 -->
+  <div class="cal-year" data-grade="1">
+    <div class="cal-year-header" style="background:var(--navy);">
+      <span>1학년</span><span class="cal-year-sub">교직이수 준비기 — 관심 갖기 & 성적 관리</span>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-month">
+        <div class="cal-month-header">3월</div>
+        <div class="cal-item info">1학년 1학기 시작 — 전공 기초과목 수강 시작</div>
+        <div class="cal-item tip">💡 교직이수에 관심 있다면 교직학과 안내책자 미리 수령</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">6~7월</div>
+        <div class="cal-item grade">1학년 1학기 성적 확인 — 전공·교직 성적 관리 시작</div>
+        <div class="cal-item tip">💡 2학년 2학기 선발 시 4개 학기 전체 성적 반영됨</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">9월</div>
+        <div class="cal-item info">1학년 2학기 시작</div>
+        <div class="cal-item tip">💡 교직 관련 교양·전공과목 수강 계획 수립 권장</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">12~1월</div>
+        <div class="cal-item grade">1학년 2학기 성적 확인</div>
+        <div class="cal-item warn">⚠ 교직 선발 기준 전공 75점, 교직 80점 — 1학년부터 누적 관리 필수</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2학년 -->
+  <div class="cal-year" data-grade="2">
+    <div class="cal-year-header" style="background:#1e3a8a;">
+      <span>2학년</span><span class="cal-year-sub">핵심 — 교직이수 신청 & 선발</span>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-month">
+        <div class="cal-month-header">3월</div>
+        <div class="cal-item info">2학년 1학기 시작</div>
+        <div class="cal-item tip">💡 기본이수과목·교과교육영역 과목 수강 권장 (전공 50학점 요건)</div>
+        <div class="cal-item tip">💡 2학기 교직이수 신청 전 학점 현황 미리 점검</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">6~7월</div>
+        <div class="cal-item grade">2학년 1학기 성적 확인 (3학기 누계)</div>
+        <div class="cal-item warn">⚠ 이 시점까지 전공 75점 미만이면 선발 불이익 가능 — 반드시 점검</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">9월 초 🔴</div>
+        <div class="cal-item key">★ 교직과정 이수신청서 소속 학과사무실 제출</div>
+        <div class="cal-item warn">⚠ 신청기간(소정기간) 내 미제출 시 해당 학년도 신청 불가</div>
+        <div class="cal-item warn">⚠ 편입생(학사편입 포함)은 원칙적으로 신청 불가</div>
+        <div class="cal-item warn">⚠ 신청 후 휴학 시 선발대상에서 제외 (단, 2-1·2-2 성적 모두 인정된 상태면 예외)</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">9~12월</div>
+        <div class="cal-item info">2학년 2학기 수강 — 교직이론 과목 병행 수강 권장</div>
+        <div class="cal-item tip">💡 교직 선발 고려 시 이 학기도 성적 관리 매우 중요</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">12월 말~1월 🔴</div>
+        <div class="cal-item key">★ 교직과정 이수예정자 선발 발표</div>
+        <div class="cal-item info">2학년 종료 1개월 이내, 4개 학기 성적 + 인성·적성·자질 반영</div>
+        <div class="cal-item tip">💡 탈락 시 이미 이수한 교직과목은 자유선택 학점으로 졸업에 포함</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3학년 -->
+  <div class="cal-year" data-grade="3">
+    <div class="cal-year-header" style="background:#065f46;">
+      <span>3학년</span><span class="cal-year-sub">교직 본격 이수 — 필수활동 시작</span>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-month">
+        <div class="cal-month-header">3월</div>
+        <div class="cal-item info">3학년 1학기 시작 — 선발 확정 후 첫 학기</div>
+        <div class="cal-item key">★ 교직이론·소양 과목 본격 수강 (교직이론 12학점, 소양 8학점)</div>
+        <div class="cal-item info">교직 복수전공 신청·선발 시기 (3학년 1학기)</div>
+        <div class="cal-item tip">💡 <strong>적·인성검사 / CPR / 성인지교육</strong><br>공지 <span style="color:#b45309;font-weight:700;">4~5월</span> 중 → 실시 4~6월 사이<br>3개 활동이 같은 공지문으로 함께 안내됨 — 공지사항에서 <em>'적인성'</em>으로 검색</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">3~8월</div>
+        <div class="cal-item info"><strong>교육봉사</strong> 시작 — 4학년 2학기 종료 전까지 60시간 이상 완료</div>
+        <div class="cal-item warn">⚠ 봉사 전 반드시 교육봉사동의서를 학사혁신팀에 제출·승인 후 실시</div>
+        <div class="cal-item tip">💡 유·초·중·고, 비영리 교육기관에서만 인정 / 단순 환경미화 등 불인정</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">9월 🔴</div>
+        <div class="cal-item key">★ 교육실습 동의서 학사혁신팀 수령 및 실습학교 섭외 시작</div>
+        <div class="cal-item warn">⚠ 매 학년도 2학기 초(9월 중) 교직과정 홈페이지 공고 확인 필수</div>
+        <div class="cal-item info">학사혁신팀 방문 → 동의서·실습허가요청 공문 수령 → 실습학교 직접 섭외</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">9~12월</div>
+        <div class="cal-item info">3학년 2학기 수강</div>
+        <div class="cal-item tip">💡 <strong>적·인성검사 / CPR / 성인지교육 2회차</strong><br>공지 <span style="color:#b45309;font-weight:700;">10~11월</span> 중 → 실시 10~11월 사이<br>공지사항에서 <em>'적인성'</em>으로 검색해 신청</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">12월 말 🔴</div>
+        <div class="cal-item key">★ 교육실습 동의서(학교장 직인본) 학사혁신팀 제출</div>
+        <div class="cal-item warn">⚠ 3학년 2학기 내 제출 완료 필수 — 미제출 시 4학년 실습 불가</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4학년 -->
+  <div class="cal-year" data-grade="4">
+    <div class="cal-year-header" style="background:#92400e;">
+      <span>4학년</span><span class="cal-year-sub">마무리 — 교육실습·봉사 완료 & 자격증 신청</span>
+    </div>
+    <div class="cal-grid">
+      <div class="cal-month">
+        <div class="cal-month-header">3월</div>
+        <div class="cal-item info">4학년 1학기 시작</div>
+        <div class="cal-item key">★ 교육실습 과목 수강신청 필수 (실습학기에 반드시 수강신청)</div>
+        <div class="cal-item warn">⚠ 7학기 이상 재학 중이어야 실습 가능</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">4~5월 🔴</div>
+        <div class="cal-item key">★ 교육실습 실시 (4주, 4~5월 중)</div>
+        <div class="cal-item info">실습학교에서 수업 참관·실습 진행</div>
+        <div class="cal-item tip">💡 복수전공자는 주전공으로만 실습 1회, 복수전공 실습 면제</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">6~8월</div>
+        <div class="cal-item info">교육봉사 잔여 시간 완료 (4학년 2학기 종료 전까지 60시간)</div>
+        <div class="cal-item tip">💡 적·인성검사·CPR·성인지교육 미이수 회차가 있다면 2학기 공지(10~11월) 놓치지 않기</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">9월 초 🔴</div>
+        <div class="cal-item key">★ 교원자격 무시험검정원서 소속 학과사무실 제출</div>
+        <div class="cal-item info">제출서류: 무시험검정원서 + 성적증명서 + 학적부</div>
+        <div class="cal-item warn">⚠ 4학년 2학기 초 소정기간 내 반드시 제출 — 미제출 시 자격증 취득 불가</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">9~12월</div>
+        <div class="cal-item key">★ 교육봉사 60시간 최종 완료</div>
+        <div class="cal-item info">교육봉사 해당학기 또는 종료 이후 학기에 교육봉사 과목 수강신청</div>
+        <div class="cal-item warn">⚠ 기말고사 전까지 확인서·소감문 학사혁신팀 제출 필수</div>
+        <div class="cal-item tip">💡 마약류 검사·성범죄 조회 결과 무시험검정 신청 시 제출</div>
+      </div>
+      <div class="cal-month">
+        <div class="cal-month-header">졸업 후</div>
+        <div class="cal-item key">★ 학위 취득(졸업) 후 교원자격증 최종 발급</div>
+        <div class="cal-item warn">⚠ 학과 졸업요건(전공학점 등)과 교직 요건 모두 충족 시 취득 가능</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="background:#fff7ed;border:1px solid #fed7aa;margin-top:8px;">
+    <p style="margin:0;font-size:12.5px;"><strong>📌 일정 공지 확인:</strong> 위 월별 일정은 통상적 일정이며 매 학기 변동될 수 있습니다. <a href="https://www.kyonggi.ac.kr/www/selectBbsNttList.do?key=7520&bbsNo=1073&searchCnd=SJ&searchKrwd=%EA%B5%90%EC%A7%81" target="_blank" style="color:var(--navy);font-weight:700;">교직 공지사항</a>에서 반드시 최신 일정을 확인하세요.</p>
+  </div>
+</div>
+
+<!-- 지도교수 안내 -->
+<div id="tab-professor" class="tabc">
+  <h2 class="h-title"><i class="ti ti-user-check"></i>지도교수를 위한 교직이수 안내</h2>
+  <p class="h-sub">소속 학과에서 교직이수 학생을 지도하는 교수님을 위한 핵심 정보입니다. 아래 모든 시기 기준은 <strong>교직과정 선발 시점</strong>을 기준으로 합니다. "선발 직후 학기" = 보통 3학년 1학기, "선발 2년 후 1학기" = 보통 4학년 1학기. 군복무·휴학 등으로 입학연도와 실제 교직 진행 학년이 다른 학생이 있을 수 있으니 유의해 주세요.</p>
+
+  <!-- 한눈에 보는 핵심 -->
+  <div class="card" style="background:linear-gradient(135deg,#eef1fb 0%,#fff 100%);border:1.5px solid var(--navy);">
+    <h3 style="color:var(--navy);"><i class="ti ti-alert-circle"></i> 교수님이 꼭 아셔야 할 핵심 3가지</h3>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+      <div style="background:#fff;border-left:4px solid var(--coral);padding:10px 12px;border-radius:6px;">
+        <strong style="color:var(--coral);">① 2학년 2학기 초 — 신청 마감을 놓치면 끝</strong>
+        <p style="margin:4px 0 0;font-size:12.5px;color:#444;">교직이수 신청은 2학년 2학기 초 소정기간에만 가능합니다. 이 기간을 놓치면 해당 학년도 신청이 불가합니다. 관심 있는 학생은 1~2학년 때부터 미리 안내해 주세요.</p>
+      </div>
+      <div style="background:#fff;border-left:4px solid var(--navy);padding:10px 12px;border-radius:6px;">
+        <strong style="color:var(--navy);">② 성적 기준 — 전공 75점, 교직 80점 (2024 입학생 기준)</strong>
+        <p style="margin:4px 0 0;font-size:12.5px;color:#444;">교원자격 무시험검정 합격요건입니다. 선발 시에도 4개 학기 성적이 반영됩니다. 2학년 1학기까지 누적 성적 관리가 핵심입니다.</p>
+      </div>
+      <div style="background:#fff;border-left:4px solid #059669;padding:10px 12px;border-radius:6px;">
+        <strong style="color:#059669;">③ 전공 50학점 — 졸업학점과 별개로 교직용 전공학점 충족 필수</strong>
+        <p style="margin:4px 0 0;font-size:12.5px;color:#444;">교원자격증을 위한 전공 50학점(기본이수과목 21학점+교과교육영역 8학점 포함)은 학과 졸업요건 전공학점과 별도입니다. 복수전공·부전공으로 졸업 전공학점이 줄어도 교직용 50학점은 반드시 충족해야 합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 학년별 지도 시점 -->
+  <div class="card">
+    <h3><i class="ti ti-timeline"></i> 학년별 지도 포인트</h3>
+    <div style="display:flex;flex-direction:column;gap:0;">
+
+      <div class="prof-step">
+        <div class="prof-step-badge" style="background:var(--navy);">1학년</div>
+        <div class="prof-step-body">
+          <strong>진로 탐색 및 사전 안내</strong>
+          <ul class="prof-list">
+            <li>교직이수에 관심 있는 학생에게 안내책자 및 본 플랫폼 소개</li>
+            <li>"2학년 2학기 초가 신청 마감" — 1학년부터 인지시키는 것이 중요</li>
+            <li>전공 성적 관리 필요성 안내 (선발 시 4개 학기 전체 반영)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="prof-step">
+        <div class="prof-step-badge" style="background:#1e3a8a;">2학년 1학기</div>
+        <div class="prof-step-body">
+          <strong>신청 전 점검</strong>
+          <ul class="prof-list">
+            <li>기본이수과목·교과교육영역 과목 수강 여부 확인 및 권장</li>
+            <li>전공 평균성적 75점 이상 달성 여부 점검</li>
+            <li>2학기 초 교직이수 신청서 제출 일정 사전 안내</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="prof-step">
+        <div class="prof-step-badge" style="background:#1e3a8a;">2학년 2학기 초 🔴</div>
+        <div class="prof-step-body">
+          <strong>교직이수 신청 — 가장 중요한 시점</strong>
+          <ul class="prof-list">
+            <li>소정기간 내 이수신청서 학과사무실 제출 독려</li>
+            <li>신청 후 휴학 시 선발 제외됨을 반드시 안내</li>
+            <li>편입생(학사편입 포함)은 원칙적으로 신청 불가</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="prof-step">
+        <div class="prof-step-badge" style="background:#065f46;">3학년</div>
+        <div class="prof-step-body">
+          <strong>교직 과목 이수 및 필수활동 관리</strong>
+          <ul class="prof-list">
+            <li>교직이론(12학점) + 교직소양(8학점) 수강 계획 확인</li>
+            <li>적성·인성검사 / 심폐소생술(CPR) / 성인지교육 — 각 2회 이수 독려</li>
+            <li>교육봉사 60시간: 동의서 사전 제출 후 활동 시작 안내</li>
+            <li>3학년 2학기 중 <strong>교육실습 동의서 제출</strong> (9월 공고 → 12월까지 제출)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="prof-step">
+        <div class="prof-step-badge" style="background:#92400e;">4학년</div>
+        <div class="prof-step-body">
+          <strong>마무리 및 자격증 신청</strong>
+          <ul class="prof-list">
+            <li>4~5월 교육실습 이수 (7학기 이상 재학 조건 확인)</li>
+            <li>4학년 2학기 초 무시험검정원서 제출 독려 — 기간 내 미제출 시 자격증 취득 불가</li>
+            <li>교육봉사 60시간 완료 여부 최종 확인</li>
+            <li>마약류 검사·성범죄 조회 결과 제출 안내</li>
+            <li>학과 졸업요건과 교직 이수요건 모두 충족해야 자격증 발급</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 입학연도별 이수 기준 -->
+  <div class="card">
+    <h3><i class="ti ti-table"></i> 입학연도별 이수 기준 요약</h3>
+    <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">학생의 입학연도(교직 선발 시점)에 따라 이수 기준이 다릅니다. 지도 학생의 입학연도를 확인하세요.</p>
+    <div style="overflow-x:auto;">
+      <table class="prof-table">
+        <thead>
+          <tr>
+            <th>입학연도</th>
+            <th>교직선발 시기</th>
+            <th>교직과목 총학점</th>
+            <th>교직이론</th>
+            <th>교직소양</th>
+            <th>성적기준</th>
+            <th>인성검사</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2009~2012</td>
+            <td>2010-2 ~ 2013-2</td>
+            <td>22학점</td>
+            <td>14학점 (7과목)</td>
+            <td>4학점 (2과목)</td>
+            <td>졸업전체 75점↑</td>
+            <td>1회↑</td>
+          </tr>
+          <tr>
+            <td>2013~2023</td>
+            <td>2014-2 ~ 2024-2</td>
+            <td>22학점</td>
+            <td>12학점 (6과목)</td>
+            <td>6학점 (3과목)</td>
+            <td>전공 75점↑, 교직 80점↑</td>
+            <td>2회↑</td>
+          </tr>
+          <tr style="background:#eef1fb;font-weight:700;">
+            <td>2024~</td>
+            <td>2025-2 ~</td>
+            <td><strong>24학점</strong></td>
+            <td>12학점 (6과목)</td>
+            <td><strong>8학점 (4과목)</strong></td>
+            <td>전공 75점↑, 교직 80점↑</td>
+            <td>2회↑</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11.5px;color:var(--sub);margin-top:8px;">※ 2024년 입학생부터 교직소양 과목에 <strong>디지털교육(2학점)</strong> 신규 추가됨</p>
+  </div>
+
+  <!-- 전공별 핵심 이수 과목 안내 -->
+  <div class="card">
+    <h3><i class="ti ti-book"></i> 우리 학과 학생이 이수해야 할 전공 과목 확인</h3>
+    <p style="font-size:12.5px;color:var(--sub);margin-bottom:10px;">기본이수과목(21학점 이상)과 교과교육영역(8학점)은 <strong>학과별 표시과목 탭</strong>에서 확인할 수 있습니다. 지도 학생의 표시과목과 본교 개설과목 대응을 미리 파악해 두시면 지도에 도움이 됩니다.</p>
+    <button onclick="showTab('dept')" style="padding:9px 18px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;">학과별 표시과목 확인하기 →</button>
+  </div>
+
+  <!-- 문의처 -->
+  <div class="card" style="background:#f7f8fc;">
+    <h3><i class="ti ti-phone"></i> 교직 관련 문의처</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div style="background:#fff;padding:12px;border-radius:8px;border:1px solid var(--line);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">교육혁신처 학사혁신팀</div>
+        <div style="font-size:12.5px;color:#444;">본관 1층</div>
+        <div style="font-size:13px;font-weight:700;color:var(--coral);">031-249-8753</div>
+        <div style="font-size:11.5px;color:var(--sub);margin-top:4px;">무시험검정원서, 교육실습동의서, 교육봉사동의서 제출 창구</div>
+      </div>
+      <div style="background:#fff;padding:12px;border-radius:8px;border:1px solid var(--line);">
+        <div style="font-weight:700;color:var(--navy);margin-bottom:4px;">교직학과</div>
+        <div style="font-size:12.5px;color:#444;">5강의동 5002호</div>
+        <div style="font-size:13px;font-weight:700;color:var(--coral);">031-249-9185</div>
+        <div style="font-size:11.5px;color:var(--sub);margin-top:4px;">교직이수 전반 상담, 교직과목 수강 안내</div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="tab-career" class="tabc">
+  <h2 class="h-title"><i class="ti ti-compass"></i>진로·취업 준비</h2>
+  <p class="h-sub">AI 진로 진단으로 나에게 맞는 트랙을 확인하고, 맞춤 채용 정보·비교과 프로그램·유용한 링크를 한 곳에서 챙기세요.</p>
+
+  <div class="card">
+    <div id="diagWrapper">
+      <div class="diag-hd">
+        <h2>AI 진로 진단</h2>
+        <p>4가지 질문으로 나에게 꼭 맞는 교직이수 이후 진로를 찾아드립니다</p>
+        <div class="diag-prog-wrap"><div class="diag-prog-bar" id="diagBar" style="width:0%"></div></div>
+      </div>
+      <div class="diag-body">
+        <div class="diag-step active" id="dStep1">
+          <h3>전공 계열을 선택해주세요</h3>
+          <p class="dsub">교직이수 중인 학과 기준으로 선택하세요 (1/4)</p>
+          <div class="diag-opts">
+            <button class="dopt" onclick="selectOpt(this,'major','language')"><strong>국어·영어·외국어·역사</strong><span>국어국문, 영어영문, 독어독문, 중어중문, 사학</span></button>
+            <button class="dopt" onclick="selectOpt(this,'major','stem')"><strong>수학·화학·과학</strong><span>수학과, 화학과</span></button>
+            <button class="dopt" onclick="selectOpt(this,'major','library')"><strong>문헌정보·사서</strong><span>문헌정보학과</span></button>
+            <button class="dopt" onclick="selectOpt(this,'major','tourism')"><strong>관광·조리·호텔·연기</strong><span>호텔경영, 외식조리, 연기학과</span></button>
+            <button class="dopt" onclick="selectOpt(this,'major','sports')"><strong>체육·예술</strong><span>체육학과</span></button>
+          </div>
+          <div class="diag-nav"><span></span><button class="btn-next" onclick="nextStep(1)">다음 →</button></div>
+        </div>
+        <div class="diag-step" id="dStep2">
+          <h3>어떤 활동에서 에너지를 얻나요?</h3>
+          <p class="dsub">가장 잘 맞는 것들을 복수 선택하세요 (2/4)</p>
+          <div class="dchips">
+            <button class="dchip" onclick="toggleChip(this,'act','teach')">가르치고 설명하기</button>
+            <button class="dchip" onclick="toggleChip(this,'act','plan')">기획하고 설계하기</button>
+            <button class="dchip" onclick="toggleChip(this,'act','research')">조사하고 분석하기</button>
+            <button class="dchip" onclick="toggleChip(this,'act','counsel')">상담하고 돕기</button>
+            <button class="dchip" onclick="toggleChip(this,'act','create')">콘텐츠 만들기</button>
+            <button class="dchip" onclick="toggleChip(this,'act','admin')">정리하고 운영하기</button>
+            <button class="dchip" onclick="toggleChip(this,'act','tech')">기술·데이터 다루기</button>
+            <button class="dchip" onclick="toggleChip(this,'act','perform')">무대·현장 활동</button>
+          </div>
+          <div class="diag-nav"><button class="btn-prev" onclick="prevStep(2)">← 이전</button><button class="btn-next" onclick="nextStep(2)">다음 →</button></div>
+        </div>
+        <div class="diag-step" id="dStep3">
+          <h3>선호하는 근무 환경은?</h3>
+          <p class="dsub">졸업 후 일하고 싶은 환경 (3/4)</p>
+          <div class="diag-opts">
+            <button class="dopt" onclick="selectOpt(this,'env','school')"><strong>학교 현장</strong><span>중고등학교, 특수학교, 도서관 등</span></button>
+            <button class="dopt" onclick="selectOpt(this,'env','public')"><strong>공공기관·교육청</strong><span>교육행정, 연구원, 공공기관</span></button>
+            <button class="dopt" onclick="selectOpt(this,'env','private')"><strong>민간 교육기업</strong><span>에듀테크, 출판사, 콘텐츠 기업</span></button>
+            <button class="dopt" onclick="selectOpt(this,'env','flexible')"><strong>자유로운 환경</strong><span>프리랜서, 스타트업, 원격근무</span></button>
+          </div>
+          <div class="diag-nav"><button class="btn-prev" onclick="prevStep(3)">← 이전</button><button class="btn-next" onclick="nextStep(3)">다음 →</button></div>
+        </div>
+        <div class="diag-step" id="dStep4">
+          <h3>나에게 가장 중요한 가치는?</h3>
+          <p class="dsub">하나만 선택해주세요 (4/4)</p>
+          <div class="diag-opts">
+            <button class="dopt" onclick="selectOpt(this,'val','stability')"><strong>안정성</strong><span>공무원·공공기관의 안정적 신분 보장</span></button>
+            <button class="dopt" onclick="selectOpt(this,'val','impact')"><strong>사회적 영향력</strong><span>학생·사회에 직접 기여하는 보람</span></button>
+            <button class="dopt" onclick="selectOpt(this,'val','growth')"><strong>성장·전문성</strong><span>지속적 학습과 커리어 발전</span></button>
+            <button class="dopt" onclick="selectOpt(this,'val','creativity')"><strong>창의성·자유</strong><span>나만의 방식으로 일하는 자율성</span></button>
+          </div>
+          <div class="diag-nav"><button class="btn-prev" onclick="prevStep(4)">← 이전</button><button class="btn-next" onclick="calcCareer()">진단 결과 보기 →</button></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="careerResult" style="display:none;">
+      <div class="res-hero">
+        <div class="rbadge" id="resultBadge">맞춤 진로 분석</div>
+        <h3 id="resultTitle"></h3>
+        <p id="resultDesc"></p>
+      </div>
+      <div style="padding:2px 0 8px;font-size:12.5px;font-weight:800;color:var(--navy);">추천 진로 트랙 3가지</div>
+      <div class="g3">
+        <div class="track-card"><div class="track-lbl" style="background:#dbeafe;color:#1d4ed8;">1순위</div><h4 id="t1title"></h4><ul id="t1list"></ul></div>
+        <div class="track-card"><div class="track-lbl" style="background:#d1fae5;color:var(--green);">2순위</div><h4 id="t2title"></h4><ul id="t2list"></ul></div>
+        <div class="track-card"><div class="track-lbl" style="background:#fef3c7;color:var(--gold);">3순위</div><h4 id="t3title"></h4><ul id="t3list"></ul></div>
+      </div>
+      <div style="padding:14px 0 8px;font-size:12.5px;font-weight:800;color:var(--navy);">추천 추가 자격증</div>
+      <div class="cert-grid" id="certRecList"></div>
+      <div style="padding:14px 0 0;font-size:12.5px;font-weight:800;color:var(--navy);">지금 당장 해야 할 일</div>
+      <div class="action-grid" id="actionCols" style="margin-top:8px;border:1px solid var(--line);border-radius:10px;overflow:hidden;"></div>
+      <div class="warn-box" style="margin-top:12px;">📡 진단 결과에 맞춰 아래 <strong>채용 레이더</strong>와 <strong>추천 비교과 프로그램</strong>도 자동으로 정리해 드렸어요. 아래로 스크롤해서 확인해보세요.</div>
+      <div style="text-align:center;margin:14px 0 2px;">
+        <button onclick="resetDiag()" style="padding:10px 24px;border:1.5px solid var(--line);border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;background:#fff;color:var(--navy);">← 다시 진단하기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 나는 어디서 시작할까? 루트 안내 -->
+  <div class="card" style="border-color:var(--navy);background:linear-gradient(135deg,#f0f3ff 0%,#fff 100%);">
+    <h3><i class="ti ti-map-2"></i> 나는 어디서 시작할까? — 상황별 루트 안내</h3>
+    <p style="font-size:12.5px;color:var(--sub);margin-bottom:12px;">교직이수가 처음이거나 뭘 물어야 할지 모르겠다면, 지금 상황을 골라보세요. 바로 필요한 곳으로 안내해드려요.</p>
+    <div style="display:flex;flex-direction:column;gap:8px;" id="routeList">
+      <button class="dopt" onclick="goRoute('intro')"><strong>🙋 교직이수가 뭔지 아직 잘 모르겠어요</strong><span>개념·자격증·이수 조건을 처음부터 설명해드려요</span></button>
+      <button class="dopt" onclick="goRoute('apply')"><strong>📝 신청하고 싶은데 어떻게 하는지 모르겠어요</strong><span>선발 시기·신청 방법·주의사항 안내</span></button>
+      <button class="dopt" onclick="goRoute('now')"><strong>📅 지금 내가 뭘 해야 하는지 모르겠어요</strong><span>학년·학기별 할 일 체크리스트로 바로 이동</span></button>
+      <button class="dopt" onclick="goRoute('career')"><strong>🎯 교직이수 후 진로가 교사 말고 뭐가 있는지 궁금해요</strong><span>다양한 교육 분야 직군 탐색</span></button>
+      <button class="dopt" onclick="goRoute('minor')"><strong>📚 교육학 부전공이랑 뭐가 다른지 비교해보고 싶어요</strong><span>교직이수 vs 교육학 부전공 차이 안내</span></button>
+      <button class="dopt" onclick="goRoute('counsel')"><strong>💬 위 항목에 없는 걸 물어보고 싶어요</strong><span>AI 진로 상담으로 자유롭게 질문하기</span></button>
+    </div>
+    <div id="routeResult" style="display:none;margin-top:12px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 14px;font-size:12.5px;line-height:1.75;"></div>
+  </div>
+
+  <!-- AI 진로 상담 -->
+  <div class="card">
+    <h3><i class="ti ti-messages"></i> AI 진로 상담</h3>
+    <p style="font-size:12.5px;color:var(--sub);margin-bottom:8px;">교직이수·진로·이수 조건 등 궁금한 걸 자유롭게 물어보세요. 위 AI 진로 진단을 먼저 하면 더 맞춤화된 답변을 받을 수 있어요.</p>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;background:#f7f8fc;border-radius:8px;padding:8px 10px;border:1px solid var(--line);">
+      <i class="ti ti-key" style="color:var(--navy);font-size:14px;flex:0 0 auto;"></i>
+      <span id="apiKeyStatus" style="font-size:11.5px;color:var(--sub);flex:1;">OpenAI API 키 미설정 — 질문 전 먼저 설정해주세요</span>
+      <button onclick="handleApiKeyBtn()" id="apiKeyBtn" style="padding:5px 12px;background:var(--navy);color:#fff;border:none;border-radius:6px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap;">키 설정</button>
+    </div>
+
+    <!-- 상황별 추천 질문 칩 -->
+    <div style="font-size:11.5px;font-weight:700;color:var(--navy);margin-bottom:6px;">💡 이런 질문을 던져보세요</div>
+    <div class="chip-row">
+      <span class="chip" onclick="setCounselQ('교직이수와 교육학 부전공의 차이가 뭔가요?')">교직 vs 부전공</span>
+      <span class="chip" onclick="setCounselQ('3학년인데 지금 교직이수 시작해도 늦지 않나요?')">지금 시작 가능?</span>
+      <span class="chip" onclick="setCounselQ('임용고시 말고 교직이수로 갈 수 있는 진로가 있나요?')">교사 외 진로</span>
+      <span class="chip" onclick="setCounselQ('교육봉사 60시간을 어떻게 채울 수 있나요?')">교육봉사 방법</span>
+      <span class="chip" onclick="setCounselQ('교직이수 선발이 안 되면 어떻게 되나요?')">선발 탈락 후 대안</span>
+      <span class="chip" onclick="setCounselQ('교직과목 중 어떤 과목이 가장 중요한가요?')">핵심 과목 추천</span>
+    </div>
+
+    <div id="counselChatLog" class="ai-chat-log" style="min-height:90px;margin-top:8px;"></div>
+    <div class="ai-input-row" style="margin-top:8px;">
+      <textarea id="counselInput" placeholder="예) 저 2학년인데 교직이수 신청하려면 어떻게 해야 하나요?" rows="2"></textarea>
+      <button onclick="sendCounsel()">질문하기</button>
+    </div>
+    <div style="text-align:right;margin-top:6px;">
+      <button class="btn-prev" onclick="resetCounsel()" style="font-size:11px;padding:6px 12px;">대화 초기화</button>
+    </div>
+  </div>
+
+  <!-- 준비도 진단 (독립 카드로 유지) -->
+  <div class="card">
+    <h3><i class="ti ti-clipboard-check"></i> AI 준비도 진단 & 학습계획</h3>
+    <p style="font-size:12.5px;color:var(--sub);">위 AI 진로 진단을 완료하면 전공·진로 결과를 바탕으로 AI가 현재 준비 상황을 평가하고 다음 학기까지 할 일을 제안합니다.</p>
+    <button onclick="runReadinessCheck()" style="width:100%;padding:11px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;">준비도 진단 받기</button>
+    <div id="aiPlanResult"></div>
+  </div>
+
+  <!-- 채용 레이더 -->
+  <div class="card">
+    <h3><i class="ti ti-radar"></i> 채용 레이더</h3>
+    <div class="warn-box" id="jobRecNote" style="display:none;"></div>
+    <div class="job-list" id="jobList"></div>
+  </div>
+
+  <!-- 임용고사 준비 로드맵 -->
+  <div class="card">
+    <h3><i class="ti ti-route"></i> 임용고사 준비 로드맵</h3>
+    <table class="tbl" style="width:100%;border-collapse:collapse;font-size:11.5px;margin-top:6px;">
+      <tr style="background:#f7f8fc;"><th style="padding:6px;border:1px solid var(--line);">시기</th><th style="padding:6px;border:1px solid var(--line);">준비 내용</th></tr>
+      <tr><td style="padding:6px;border:1px solid var(--line);text-align:center;">1~2학년</td><td style="padding:6px;border:1px solid var(--line);">전공 기본기 / 교직이수 신청 준비 / 성적 관리</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--line);text-align:center;">3학년</td><td style="padding:6px;border:1px solid var(--line);">임용 출제 범위 파악 / 스터디 구성 / 기출문제 분석</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--line);text-align:center;">4학년 1학기</td><td style="padding:6px;border:1px solid var(--line);">교육실습 + 임용 1차 대비(논술·전공 필기) 병행</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--line);text-align:center;">4학년 2학기</td><td style="padding:6px;border:1px solid var(--line);">11~12월 1차 필기 응시 → 합격 시 2월 수업실연·면접</td></tr>
+      <tr><td style="padding:6px;border:1px solid var(--line);text-align:center;">졸업 후</td><td style="padding:6px;border:1px solid var(--line);">재도전 / 사립학교 채용 병행 지원</td></tr>
+    </table>
+  </div>
+
+  <!-- 추천 비교과 프로그램 -->
+  <div class="card">
+    <h3><i class="ti ti-puzzle"></i> 추천 비교과 프로그램</h3>
+    <p>경기대학교 <strong>교수학습개발센터(CTL) 학습지원체계</strong>와 <strong>인재개발처 진로취업 비교과 프로그램</strong>을 기반으로, 교직이수 선배들이 실제로 참여한 프로그램 위주로 정리했습니다. 위에서 진로 진단을 완료하면 진단 결과에 맞는 프로그램이 먼저 추천됩니다.</p>
+    <div class="linkgrid">
+      <a href="https://barun.kyonggi.ac.kr/" target="_blank">BARUN 비교과·신청 통합 포털 →</a>
+      <a href="https://ctl.kyonggi.ac.kr/ko/learning" target="_blank">학습지원체계(CTL) 전체보기 →</a>
+      <a href="https://job.kyonggi.ac.kr/ko/program/index/list" target="_blank">진로취업 비교과(인재개발처) 전체보기 →</a>
+    </div>
+    <div id="progList"></div>
+  </div>
+
+  <!-- 교외 프로그램 -->
+  <div class="card">
+    <h3><i class="ti ti-building-arch"></i> 교외 프로그램 — 대한민국 교육박람회 (Education Korea)</h3>
+    <p>매년 1월 서울 코엑스(COEX)에서 열리는 <strong>아시아 최대 규모의 교육·에듀테크 박람회</strong>입니다. 최신 교육 트렌드, 에듀테크 솔루션, 교재·교구, 진로·진학 정보 등을 한자리에서 둘러볼 수 있어 예비교사로서 현장 감각을 넓히기에 좋습니다. <strong>제23회 Education Korea 2026은 2026년 1월 21일(수)~23일(금), 코엑스에서 개최</strong> 예정이며, 사전등록 시 무료 관람이 가능한 경우가 많으니 홈페이지에서 일정을 확인하세요.</p>
+    <div class="linkgrid">
+      <a href="https://www.educationkorea.kr/" target="_blank">대한민국 교육박람회 공식 홈페이지 →</a>
+      <a href="https://www.coex.co.kr/exhibitions/2026-%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD-%EA%B5%90%EC%9C%A1%EB%B0%95%EB%9E%8C%ED%9A%8C/" target="_blank">코엑스 전시 안내 페이지 →</a>
+    </div>
+  </div>
+
+  <!-- 유용한 링크 -->
+  <div class="card">
+    <h3><i class="ti ti-link"></i> 유용한 링크 모음</h3>
+    <div class="linkgrid">
+      <a href="https://www.kyonggi.ac.kr/u_teacher/index.do" target="_blank">교직학부 홈페이지 · 공지사항</a>
+      <a href="https://kutis.kyonggi.ac.kr/webkutis/view/indexWeb.jsp" target="_blank">웹쿠티스 (KUTIS)</a>
+      <a href="https://barun.kyonggi.ac.kr/" target="_blank">BARUN 비교과·취업지원</a>
+      <a href="https://ctl.kyonggi.ac.kr/ko/learning" target="_blank">교수학습개발센터(CTL)</a>
+      <a href="https://job.kyonggi.ac.kr/ko/program/index/list" target="_blank">인재개발처 진로취업 프로그램</a>
+      <a href="https://goe.go.kr/recruit/main.do" target="_blank">경기도교육청 구인구직</a>
+    </div>
+  </div>
+</div>
+
+<!-- 부전공 -->
+<div id="tab-minor" class="tabc">
+  <h2 class="h-title"><i class="ti ti-certificate"></i>교육학 부전공</h2>
+  <p class="h-sub">교직과정 이수 여부와 무관하게 누구나 신청할 수 있는 학사 부전공입니다.</p>
+
+  <div class="grid2">
+    <div class="stat"><div class="lab">이수 요건</div><div class="val">21학점↑</div><div class="note" style="color:var(--sub);font-weight:600;">교직이론+소양 과목</div></div>
+    <div class="stat"><div class="lab">신청 방법</div><div class="val" style="font-size:14px;">KUTIS 신청</div><div class="note" style="color:var(--sub);font-weight:600;">학기별 부전공 신청기간</div></div>
+  </div>
+
+  <div class="card">
+    <h3>① 교직 이수로 이미 채우는 학점 (20학점)</h3>
+    <p>교직과정을 이수 중이라면 아래 과목들은 어차피 들어야 하는 필수 과목입니다. 이 학점이 그대로 부전공 21학점에도 인정됩니다.</p>
+    <div style="margin-top:8px;">
+      <div class="courses-box">
+        <strong>교직이론 필수 6과목 (12학점)</strong>
+        <p>교육학개론 · 교육심리 · 교육사회 · 교육철학및교육사 · 교육과정및평가 · 교육방법및교육공학 · 교육행정및교육경영 — 이 7과목 중 6과목</p>
+      </div>
+      <div class="courses-box" style="margin-top:6px;">
+        <strong>교직소양 4과목 (8학점)</strong>
+        <p>생활지도및상담 · 특수교육학개론 · 교직실무 · 디지털교육<span style="color:var(--sub);">(2025-2학기 이전 선발자는 디지털교육 제외, 3과목 6학점)</span></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="minor-elective">
+    <h3>② 21학점을 채우기 위해 추가로 듣는 학점</h3>
+    <p>위 ①의 20학점(이전 선발자는 18학점)에 더해, 아래 두 그룹 중에서 필요한 만큼 추가로 수강하면 21학점을 충족합니다.</p>
+
+    <div class="courses-box" style="margin-top:8px;">
+      <strong>(가) 남는 1과목 — 교직이론 7과목 중 ①에서 선택하지 않은 나머지 1과목 (2학점)</strong>
+      <p>교육학개론 · 교육심리 · 교육사회 · 교육철학및교육사 · 교육과정및평가 · 교육방법및교육공학 · 교육행정및교육경영 — 7과목 중 ①에서 6과목을 들었다면, 남은 1과목을 추가로 듣는 방법입니다.</p>
+    </div>
+
+    <div class="courses-box" style="margin-top:6px;">
+      <strong>(나) 선택형 교직이론 추가 과목 (각 2학점)</strong>
+      <p style="margin-bottom:6px;">①의 필수 과목과 별개로, 경기대에서 개설되는 교직이론 선택 과목입니다.</p>
+      <div class="chip-row" style="margin:0;">
+        <span class="chip">다문화교육론</span>
+        <span class="chip">교사론</span>
+        <span class="chip">평생교육론</span>
+        <span class="chip">집단상담의이론과실제</span>
+        <span class="chip">논술교육론</span>
+        <span class="chip">멀티미디어와교수설계</span>
+        <span class="chip">교육정책론</span>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:10px;">
+      <div class="stat">
+        <div class="lab">2025-2학기 이후 선발자</div>
+        <div class="val" style="font-size:14px;">+1과목 (2학점)</div>
+        <div class="note" style="color:var(--sub);font-weight:600;">20학점 → (가) 또는 (나)에서 1과목 추가 → 22학점</div>
+      </div>
+      <div class="stat">
+        <div class="lab">2025-2학기 이전 선발자</div>
+        <div class="val" style="font-size:14px;">+2과목 (4학점)</div>
+        <div class="note" style="color:var(--sub);font-weight:600;">18학점 → (가)+(나)에서 2과목 추가 → 22학점</div>
+      </div>
+    </div>
+    <div class="warn-box" style="margin-top:8px;">졸업학기에 전공이수자격원을 별도로 제출해야 합니다 — 미확인으로 인한 불이익은 본인 책임입니다.</div>
+  </div>
+
+  <div class="card">
+    <h3>제외 과목</h3>
+    <div class="chip-row">
+      <span class="chip">21학점에 포함되지 않는 과목</span>
+    </div>
+    <div class="detail-box open"><p>교육실습, 교육봉사활동, 학과별 교과교육영역(OO교육론·OO교재연구및지도법·논리및논술 등), 교직자유선택 과목은 부전공 21학점 계산에 포함되지 않습니다.</p></div>
+  </div>
+
+
+</div>
+
+</div>
+
+<footer style="text-align:left;padding:24px 14px 16px;font-size:12px;color:#666;max-width:880px;margin:0 auto;line-height:1.9;">
+  <div style="font-weight:800;color:var(--navy);font-size:13px;margin-bottom:8px;">경기대학교 교직과정 안내</div>
+  <p style="margin-bottom:10px;">교직과정 안내 책자 및 공지를 우선 꼼꼼하게 확인하세요.<br>문의가 있을 경우 급하지 않다면, 아래로 <strong>소속 · 학번 · 성함 · 문의 내용</strong>을 정리해서 문의해 주시기 바랍니다.</p>
+  <div style="background:#f4f6fb;border-radius:10px;padding:12px 14px;font-size:12px;line-height:2;border:1px solid var(--line);">
+    <div>📧 <strong>이메일 (메일 선호)</strong> — <a href="mailto:edu8753@kyonggi.ac.kr" style="color:var(--navy);font-weight:700;">edu8753@kyonggi.ac.kr</a></div>
+    <div style="margin-top:6px;font-weight:700;color:var(--navy);font-size:11.5px;">내용별 문의처</div>
+    <div>📞 <strong>교직과목 및 직자과목 문의</strong> — 교직학부 사무실 <a href="tel:031-249-9185" style="color:var(--navy);">031-249-9185</a></div>
+    <div>📞 <strong>기본이수·교과교육영역 과목 문의</strong> — 소속 학과 사무실</div>
+    <div>📞 <strong>기타 문의</strong> — 학사혁신팀 <a href="tel:031-249-8753" style="color:var(--navy);">031-249-8753</a></div>
+  </div>
+  <p style="margin-top:10px;font-size:11px;color:#aaa;text-align:center;">이 플랫폼의 내용은 참고용이며, 정확한 기준은 반드시 공식 공지를 우선 확인하세요.</p>
+</footer>
+
+<script>
+/* ===== 데이터 ===== */
+var THEORY=[
+  {name:'교육학개론',note:'교직이론의 기초가 되는 핵심 과목입니다.'},
+  {name:'교육심리',note:'학습자의 심리·발달·동기 등을 다루는 과목입니다.'},
+  {name:'교육사회',note:'교육과 사회 구조의 관계를 탐구하는 과목입니다.'},
+  {name:'교육철학및교육사',note:'교육의 역사적·철학적 기반을 다루는 과목입니다.'},
+  {name:'교육과정및평가',note:'교육과정 설계 및 학습 평가 방법을 다루는 과목입니다.'},
+  {name:'교육방법및교육공학',note:'수업 설계, 교수법, 교육공학적 방법론을 다루는 과목입니다.'},
+  {name:'교육행정및교육경영',note:'학교 행정과 교육기관 운영 원리를 다루는 과목입니다.'}
+];
+
+var DEPTS=[
+ {k:'국어 국어국문학과',name:'국어국문학과',pill:['navy','국어'],basic:'기본이수과목 (4분야 각 1과목, 총 7과목 21학점)<br>① 한국어학의이해 / 한국어문법론 / 한국어의역사<br>② 한국현대문학의이해 / 고전문학사의라이벌 중 택1<br>③ 한국현대시론 / 한국현대소설론 중 택1<br>④ 한국어와대중매체 / 한국어의의미와화용 중 택1',edu:'교과교육영역 (필수)<br>· 국어교육론<br>· 국어교재연구및지도법<br>· 논리및논술(직자)'},
+ {k:'영어 영어영문학과',name:'영어영문학과',pill:['navy','영어'],basic:'기본이수과목 (7과목 21학점 이상)<br>영어학개론 / 영어문법1·2 중 택1 / 실용영어회화1·2 중 택1 / 영어작문1·2 중 택1 / 고급영어독해 / 영어음성학·음운론 중 택1 / 영미문화 / 영문학개론',edu:'교과교육영역 (필수)<br>· 영어교육론<br>· 영어교재연구및지도법<br>· 논리및논술(직자)'},
+ {k:'독일어 독어독문',name:'글로벌어문학부 독어독문전공',pill:['navy','독일어'],basic:'기본이수과목 (7과목 21학점 이상)<br>독어학의이해 / 독일명작의이해 / 독일어문법1·2 중 택1 / 독일어회화1·2·3 중 택1 / 독일어작문 / 독일문학비평 / 독일문화와사회 / 독문번역연습',edu:'교과교육영역 (필수)<br>· 독일어교육론<br>· 독일어교재연구및지도법<br>· 논리및논술(직자)'},
+ {k:'중국어 중어중문',name:'글로벌어문학부 중어중문전공',pill:['navy','중국어'],basic:'기본이수과목 (7과목 21학점 이상)<br>중국문학의이해 / 실용중국어어법 / 중급중국어회화연습·고급중국어회화 중 택1 / 중국어AI번역작문 / 중국사회문화입문 중 택1 / 중국어학의이해 / 중급중국어강독 중 택1',edu:'교과교육영역 (필수)<br>· 중국어교육론<br>· 중국어교재연구및지도법<br>· 논리및논술(직자)'},
+ {k:'역사 사학과',name:'사학과',pill:['navy','역사'],basic:'기본이수과목 (5분야 각 1과목, 총 7과목)<br>①역사학입문/한국사입문 ②한국고대사/중세사/근세사/근대사<br>③동아시아고대·중세사/서양고대·중세사<br>④지역사와박물관 중 택1 ⑤한국현대사/동아시아현대사',edu:'교과교육영역 (필수)<br>· 역사교육론<br>· 역사교재연구및지도법<br>· 논리및논술(직자)'},
+ {k:'문헌정보 사서',name:'문헌정보학과',pill:['teal','사서교사'],basic:'기본이수과목 (7과목 21학점 이상)<br>정보자원분류론 / 정보자원목록론 / 디지털도서관 / 독서교육 / 정보검색론 / 정보서비스론 / 학교도서관경영 / 정보미디어론',edu:'특이사항<br>· 교과교육영역(8학점) 이수 불필요<br>· 교육실습 → 실무실습(도서관실습)으로 대체'},
+ {k:'체육 체육학과',name:'체육학과',pill:['navy','체육'],basic:'기본이수과목 (7과목 21학점 이상)<br>체육사·철학 / 스포츠심리학 / 스포츠사회학 / 운동생리학 / 운동역학 / 운동실기 / 체육측정평가 / 건강교육 / 무용교육 / 특수체육 / 여가레크리에이션',edu:'교과교육영역 (필수)<br>· 체육교육론<br>· 체육교재연구및지도법<br>· 체육논리및논술'},
+ {k:'수학 수학과',name:'수학과',pill:['navy','수학'],basic:'기본이수과목 (7과목 21학점 이상)<br>정수론 / 복소해석학1·2 중 택1 / 해석학·고급해석학 중 택1 / 선형대수1·2 중 택1 / 현대대수학1·2 중 택1 / 미분기하학1·2 중 택1 / 위상수학1·2 중 택1',edu:'교과교육영역 (필수)<br>· 수학교육론<br>· 수학교재연구및지도법<br>· 수학논리및논술'},
+ {k:'화학 화학과',name:'화학과',pill:['navy','화학'],basic:'기본이수과목 (8분야 중 7분야, 21학점)<br>①물리화학1·2 ②유기화학1·2 ③무기화학1·2<br>④분석화학1및실험 ⑤물리화학실험 ⑥유기화학실험<br>⑦무기화학실험 ⑧분석화학2및실험',edu:'교과교육영역 (필수, 직자)<br>· 과학교육론(직자)<br>· 과학교재연구및지도법(직자)<br>· 논리및논술(직자)'},
+ {k:'관광 호텔경영',name:'호텔외식경영학부 호텔경영전공',pill:['amber','관광'],basic:'기본이수과목 (7과목 21학점 이상)<br>관광학원론 / 여행사경영론 / 호텔산업과경영·호텔경영론 중 택1 / 관광교통과모빌리티 / 관광자원개발론 / 관광법규 / 호텔F&amp;B실무론',edu:'교과교육영역 (필수, 직자)<br>· 관광교육론(직자)<br>· 관광교재연구및지도법(직자)<br>· 논리및논술(직자)'},
+ {k:'조리 외식조리',name:'호텔외식경영학부 외식·조리전공',pill:['amber','조리'],basic:'기본이수과목 (7과목 21학점 이상)<br>식품과조리과학 / 한식조리실기1 / 중급서양조리실습 / 제과제빵실기 / 단체급식론 / 영양학 / 식품위생과법규 / 외식유통관리론 / 외식경영관리론',edu:'교과교육영역 (필수)<br>· 조리교육론<br>· 조리교재연구및지도법<br>· 논리및논술(직자)'},
+ {k:'연극영화 연기학과',name:'연기학과',pill:['purple','연극영화'],basic:'기본이수과목 (7과목 21학점 이상)<br>세계연기예술사 / 공연예술의이론과실제 / 화법의실제 / 공연제작종합설계3·다원제작워크숍 중 택1 / 연기실습워크숍1~4 중 택1 / 스토리텔링창작워크숍 / 매체연기워크숍',edu:'교과교육영역 (필수)<br>· 연극교육론<br>· 연극교재연구및지도법<br>· 논리및논술(직자)'}
+];
+
+/* ===== 할 일 생성 데이터 ===== */
+var TODO_MAP={
+  '1-1':['1학년은 전원 "교직과정 선발 전" 상태입니다. (선발은 2학년 2학기에 진행)','교직과정 제도와 전체 일정을 미리 알아두세요. 아직 신청 시기는 아닙니다.','전공 기초과목을 충실히 듣고 학점 관리를 시작하세요. (선발 시 4개 학기 성적이 반영됩니다)'],
+  '1-2':['1학년은 전원 "교직과정 선발 전" 상태입니다. (선발은 2학년 2학기에 진행)','전공 기초과목과 교양을 충실히 들어두면 2학년 신청 시 성적 요건에 유리합니다.','다음 학기(2학년 1학기)부터 신청 전 마지막 성적 관리 구간이 시작됩니다.'],
+  '2-1':['2학년 1학기도 아직 "교직과정 선발 전" 상태입니다. (선발은 이번 학년 2학기에 진행)','전공과목·기본이수과목 학점을 꾸준히 채워가세요. 2학기 신청을 위해 성적을 관리하세요.','교직학부 홈페이지·공지사항에서 신청 일정(통상 2학기 초)을 미리 확인하세요.'],
+  '2-2-before':['2학년 2학기 = 선발 발표 "전" 입니다. 교직과정 이수신청서를 학과사무실에 제출하세요. (소정 기간 내)','신청 후 휴학하면 선발 대상에서 제외되니 휴학 계획이 있다면 학과사무실에 꼭 문의하세요.','신청서 제출 후에도 이번 학기 성적까지 선발 평가에 반영되니 끝까지 성적을 관리하세요.'],
+  '2-2-after':['2학년 2학기 = 선발 발표 "후" 입니다. 이수예정자 선발 결과를 확인하세요.','선발되었다면 3학년부터 교직과목(교직이론·소양) 수강 계획을 세우세요.','선발되지 않았다면 이미 이수한 교직과목은 자유선택 학점으로 인정되니 학사팀에 학점 처리를 확인하세요.'],
+  '3-1':['3학년부터는 "교직과정 선발 완료" 학생만 해당하는 시기입니다.','교직이론·교과교육영역 과목을 수강 신청하세요.','적·인성검사·CPR·성인지교육 일정을 확인하고 1회차를 이수하세요.','복수전공 신청을 고려한다면 이번 학기에 검토하세요.'],
+  '3-2':['적·인성검사·CPR·성인지교육 2회차를 이수하세요.','9월 중 교육실습 동의서를 제출하세요 (4학년 1학기 실습 대비).','교육봉사 활동을 시작해 60시간을 채워나가세요.'],
+  '4-1':['4·5월 중 교육실습(4주)을 진행하세요.','교직과목·전공과목 성적(75/80점 기준)을 마지막까지 점검하세요.','교육봉사 60시간을 완료하세요.'],
+  '4-2':['무시험검정 원서·성적증명서·학적부를 학과사무실에 제출하세요. (학기 초 소정 기간)','학점·조건 탭에서 전공·교직과목 학점, 성적기준, 필수활동(인성검사·CPR·성인지교육·교육봉사·교육실습)을 모두 충족했는지 최종 점검하세요.','졸업 유예 시 실제 졸업학기에 원서를 다시 제출해야 함을 기억하세요.']
+};
+
+/* ===== 진로진단 / 채용레이더 / 비교과 ===== */
+var DA={major:'',act:[],env:'',val:''};
+var curStep=1;
+function updateBar(){document.getElementById('diagBar').style.width=((curStep-1)/4*100)+'%';}
+function selectOpt(btn,key,val){
+  btn.closest('.diag-opts').querySelectorAll('.dopt').forEach(function(b){b.classList.remove('sel');});
+  btn.classList.add('sel');DA[key]=val;
+}
+function toggleChip(btn,key,val){
+  btn.classList.toggle('sel');
+  if(DA[key].indexOf(val)>-1)DA[key]=DA[key].filter(function(v){return v!==val;});else DA[key].push(val);
+}
+function nextStep(from){
+  if(from===1&&!DA.major){alert('전공 계열을 선택해주세요.');return;}
+  if(from===3&&!DA.env){alert('근무 환경을 선택해주세요.');return;}
+  document.getElementById('dStep'+from).classList.remove('active');
+  curStep=from+1;
+  document.getElementById('dStep'+curStep).classList.add('active');
+  updateBar();
+}
+function prevStep(from){
+  document.getElementById('dStep'+from).classList.remove('active');
+  curStep=from-1;
+  document.getElementById('dStep'+curStep).classList.add('active');
+  updateBar();
+}
+var CDB={
+  school:{title:'학교 교사 트랙',tracks:[{title:'중등학교 정교사 임용',items:['임용고사 1차 필기(11~12월)','2차 수업실연·면접(2월)','사립학교 자체채용 병행']},{title:'사립학교·국제학교',items:['학교법인별 자체 채용 공고','교육실습 중 네트워크 구축','나이스 기간제 교사 공고']},{title:'기간제 교사 경험',items:['경기도교육청 구인구직','나이스 기간제 공고','실전 수업 역량 강화']}],certs:[{n:'교원자격증 (정교사 2급)',d:'교직이수 완료 시 자동 발급'},{n:'한국어교원 (언어계열)',d:'다문화·외국인 교육으로 확장 가능'}],actions:[{t:'이번 학기',i:['임용 기출 1개년 분석','표시과목 핵심 개념 정리','수업 지도안 2개 작성']},{t:'포트폴리오',i:['15분 수업 영상 촬영','학생 활동지 제작','교육봉사 성찰 기록']},{t:'다음 단계',i:['임용 스터디 참여','사립학교 공채 일정 파악','교육청 기간제 등록']}]},
+  public:{title:'교육행정·공공기관 트랙',tracks:[{title:'교육행정직 공무원',items:['교육행정직 9급 공채 응시','교육학개론·행정법 준비','국가직·지방직 공무원 시험']},{title:'교육연구기관',items:['KEDI·KICE·KERIS 채용','연구보조 및 프로젝트 참여','평생교육진흥원(NILE)']},{title:'공공 평생교육기관',items:['시·군·구 평생학습관','대학 평생교육원','도서관·복지관 교육기획']}],certs:[{n:'평생교육사 2급',d:'평생학습관·교육재단 취업 필수'},{n:'사회조사분석사 2급',d:'교육연구·정책 조사 보고서'}],actions:[{t:'이번 학기',i:['교육행정학·교육법 기초 학습','JOB-ALIO 공고 정기 확인','사회조사분석사 준비 병행']},{t:'포트폴리오',i:['교육정책 분석 보고서','프로그램 기획서 1건','설문 설계·분석 샘플']},{t:'다음 단계',i:['9급 교육행정직 시험 준비','교육청 행정직 인턴 지원','교육대학원 행정 전공 검토']}]},
+  edtech:{title:'에듀테크·교육콘텐츠 트랙',tracks:[{title:'교육콘텐츠 기획·개발',items:['출판사·교육기업 PM 직무','디지털 교과서·학습 앱 기획','LMS 콘텐츠 설계']},{title:'에듀테크 스타트업',items:['AI 튜터·피드백 서비스','EdTech 기업 기획·마케팅','프로덕트 매니저(PdM)']},{title:'기업교육(HRD)',items:['기업 내 교육담당 HRD','직업훈련기관 교육운영','강사·퍼실리테이터']}],certs:[{n:'직업상담사 2급',d:'진로·취업상담·HRD 직무'},{n:'평생교육사 2급',d:'기업교육·성인학습 분야'}],actions:[{t:'이번 학기',i:['교육과정 설계 ADDIE 모델 학습','인터랙티브 콘텐츠 제작','채용 JD 분석 → 역량 파악']},{t:'포트폴리오',i:['디지털 활동지·퀴즈 데모','콘텐츠 기획서 1장','수업 영상·튜토리얼']},{t:'다음 단계',i:['에듀테크 기업 인턴 지원','교육기획 직군 탐색','교육대학원 교육공학 전공']}]},
+  counsel:{title:'상담·청소년교육 트랙',tracks:[{title:'청소년 상담·복지',items:['청소년상담복지센터','학교 밖 청소년 지원센터','교육복지우선지원 사업']},{title:'진로·취업 상담',items:['대학일자리플러스센터','고용센터 민간위탁','진로 상담 교사 협업']},{title:'특수교육·통합교육',items:['특수교사 추가 이수','통합학급 보조 역할','평생교육 장애인 지원']}],certs:[{n:'청소년상담사 3급',d:'청소년상담복지센터·생활지도'},{n:'청소년지도사',d:'청소년수련관·자유학기 기획'}],actions:[{t:'이번 학기',i:['생활지도및상담 수강','교육봉사를 상담형으로 설계','상담 윤리·기록 방법 학습']},{t:'포트폴리오',i:['상담 사례 관찰 노트','진로 프로그램 기획서','교육봉사 성찰 기록']},{t:'다음 단계',i:['청소년지도사·상담사 시험 준비','복지기관 인턴·자원봉사','교육대학원 상담교육 전공']}]}
+};
+var BADGES={school:'학교 교사형',public:'교육행정형',edtech:'에듀테크형',counsel:'상담·복지형'};
+var DESCS={
+  school:'가르치는 현장에서 직접 학생과 만나는 것에 보람을 느끼는 유형입니다. 임용고사 준비와 교육실습 경험을 핵심 자산으로 삼으세요.',
+  public:'체계적인 시스템 안에서 교육을 기획하고 운영하는 것이 강점인 유형입니다. 행정·연구·평생교육 분야로 폭넓게 진출 가능합니다.',
+  edtech:'콘텐츠 제작과 기술 활용으로 교육을 혁신하는 유형입니다. 에듀테크·출판·HRD 분야에서 교직 역량이 강점이 됩니다.',
+  counsel:'사람 곁에서 듣고 지원하는 것에 에너지를 쏟는 유형입니다. 상담·복지·청소년 분야에서 교직 이수 경험이 강력한 배경이 됩니다.'
+};
+function getType(){
+  var env=DA.env,act=DA.act,val=DA.val;
+  if(env==='school')return'school';
+  if(env==='public')return'public';
+  if(env==='private'||act.indexOf('create')>-1||act.indexOf('tech')>-1)return'edtech';
+  if(act.indexOf('counsel')>-1||val==='impact')return'counsel';
+  if(val==='stability')return'public';
+  if(val==='creativity')return'edtech';
+  return'school';
+}
+function calcCareer(){
+  if(!DA.val){alert('가치를 선택해주세요.');return;}
+  document.getElementById('diagBar').style.width='100%';
+  var type=getType();
+  var d=CDB[type];
+  var others=Object.keys(CDB).filter(function(k){return k!==type;});
+  document.getElementById('resultBadge').textContent=BADGES[type];
+  document.getElementById('resultTitle').textContent=d.title;
+  document.getElementById('resultDesc').textContent=DESCS[type];
+  function fillTrack(pfx,data,i){
+    document.getElementById(pfx+'title').textContent=data.tracks[i].title;
+    var ul=document.getElementById(pfx+'list');ul.innerHTML='';
+    data.tracks[i].items.forEach(function(t){var li=document.createElement('li');li.textContent=t;ul.appendChild(li);});
+  }
+  fillTrack('t1',d,0);fillTrack('t2',CDB[others[0]],0);fillTrack('t3',CDB[others[1]],0);
+  var certDiv=document.getElementById('certRecList');certDiv.innerHTML='';
+  d.certs.forEach(function(c){certDiv.innerHTML+='<div class="cert-rec"><strong>'+c.n+'</strong><span>'+c.d+'</span></div>';});
+  var actDiv=document.getElementById('actionCols');actDiv.innerHTML='';
+  d.actions.forEach(function(a){
+    var lis='';a.i.forEach(function(i){lis+='<li>'+i+'</li>';});
+    actDiv.innerHTML+='<div class="action-col"><h4>'+a.t+'</h4><ul>'+lis+'</ul></div>';
+  });
+  document.getElementById('diagWrapper').style.display='none';
+  document.getElementById('careerResult').style.display='block';
+  renderJobList(type);
+  renderProgList(type);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function resetDiag(){
+  DA={major:'',act:[],env:'',val:''};curStep=1;
+  document.querySelectorAll('.diag-step').forEach(function(s){s.classList.remove('active');});
+  document.getElementById('dStep1').classList.add('active');
+  document.querySelectorAll('.dopt').forEach(function(b){b.classList.remove('sel');});
+  document.querySelectorAll('.dchip').forEach(function(b){b.classList.remove('sel');});
+  document.getElementById('diagBar').style.width='0%';
+  document.getElementById('diagWrapper').style.display='block';
+  document.getElementById('careerResult').style.display='none';
+  renderJobList();
+  renderProgList();
+}
+
+/* 채용 레이더 */
+var JOBLINKS=[
+  {id:'imyong',name:'임용고시닷컴',url:'https://www.imyonggosi.com/',desc:'중등·유아·특수·사서 교원임용 정보, 기출, 합격수기 포털',tag:'r',tagName:'임용',types:['school']},
+  {id:'nice',name:'나이스 교직원 온라인채용',url:'https://edurecruit.go.kr/',desc:'공립 교원 임용시험 접수·합격자 발표 공식 창구',tag:'r',tagName:'임용공식',types:['school']},
+  {id:'goe',name:'경기도교육청 구인구직',url:'https://goe.go.kr/recruit/main.do',desc:'기간제·사립교원·시간강사·교육공무직 학교 현장 채용',tag:'b',tagName:'교육청',types:['school','counsel']},
+  {id:'alio',name:'JOB-ALIO 공공기관 채용',url:'https://job.alio.go.kr/main.do',desc:'KEDI·KICE·KERIS 등 교육 공공기관 채용공고 통합',tag:'g',tagName:'공공',types:['public']},
+  {id:'work',name:'워크넷',url:'https://www.work.go.kr/',desc:'평생교육사·직업상담·청소년지도·훈련기관 교육직 채용',tag:'g',tagName:'고용부',types:['public','counsel']},
+  {id:'saramin',name:'사람인',url:'https://www.saramin.co.kr/',desc:'교육콘텐츠개발·HRD·교육기획·에듀테크 PM 직무 탐색',tag:'b',tagName:'민간',types:['edtech']},
+  {id:'barun',name:'경기대 BARUN 취업지원',url:'https://barun.kyonggi.ac.kr/',desc:'교내 진로상담·잡카페·비교과·현장실습 프로그램',tag:'g',tagName:'교내',types:['school','public','edtech','counsel']},
+  {id:'linkareer',name:'링커리어',url:'https://linkareer.com/',desc:'교육 관련 대외활동·인턴십·공모전 정보',tag:'a',tagName:'대외활동',types:['edtech','counsel']}
+];
+var JOB_REC={
+  school:{ids:['imyong','nice','goe'],label:'학교 교사형'},
+  public:{ids:['alio','work','barun'],label:'교육행정형'},
+  edtech:{ids:['saramin','linkareer','barun'],label:'에듀테크형'},
+  counsel:{ids:['work','goe','barun'],label:'상담·복지형'}
+};
+function renderJobList(type){
+  var note=document.getElementById('jobRecNote');
+  var list=document.getElementById('jobList');
+  if(!note||!list) return;
+  var order=JOBLINKS.slice();
+  if(type&&JOB_REC[type]){
+    var recIds=JOB_REC[type].ids;
+    order.sort(function(a,b){
+      var ai=recIds.indexOf(a.id), bi=recIds.indexOf(b.id);
+      ai=ai===-1?99:ai; bi=bi===-1?99:bi;
+      return ai-bi;
+    });
+    note.style.display='block';
+    note.innerHTML='🎯 진단 결과("'+JOB_REC[type].label+'")에 맞춰 <strong>'+recIds.map(function(id){var j=JOBLINKS.find(function(x){return x.id===id;});return j?j.name:id;}).join(', ')+'</strong>을 가장 위로 추천해 드렸어요.';
+  }else{
+    note.style.display='none';
+  }
+  list.innerHTML='';
+  order.forEach(function(j){
+    var isRec=type&&JOB_REC[type]&&JOB_REC[type].ids.indexOf(j.id)>-1;
+    var a=document.createElement('a');
+    a.className='job-card'+(isRec?' rec':'');
+    a.href=j.url;a.target='_blank';
+    a.innerHTML='<div>'+(isRec?'<span class="rec-badge">추천</span>':'')+'<strong>'+j.name+'</strong><span>'+j.desc+'</span></div><span class="jtag '+j.tag+'">'+j.tagName+'</span>';
+    list.appendChild(a);
+  });
+}
+
+/* 추천 비교과 프로그램 */
+var PROGRAMS=[
+  {id:'p_tutor',name:'기초 튜터링 (새내기·디딤돌·소수집단 튜터링)',host:'교수학습개발센터(CTL)',period:'매학기 초 신청 → 학기 중 운영 (선배들이 가장 많이 참여한 프로그램)',url:'https://barun.kyonggi.ac.kr/',types:['school','counsel'],desc:'신입생이나 학습에 어려움을 겪는 학생을 직접 가르치고 멘토링하는 "또래강사" 역할. 교직이수 선배들이 3년 연속 가장 많이 참여한 프로그램으로, 가르치는 경험을 쌓으면서 임용 면접·수업실연 사례로도 활용됩니다.',note:'⚡ 신청기간이 1주일로 짧으니 학기 시작 직후 BARUN에서 바로 신청하세요.'},
+  {id:'p_turtle',name:'Creative 거북이 학습그룹',host:'교수학습개발센터(CTL)',period:'매학기 초 신청 → 학기 중 운영 (소액 활동비 지원)',url:'https://barun.kyonggi.ac.kr/',types:['school','counsel'],desc:'같은 관심사를 가진 학생들과 함께 학습그룹을 만들어 운영하는 프로그램. 교직이수 선배들의 참여율이 높으며, 모임 기획·운영 경험이 학급 운영·생활지도 역량으로 이어집니다.'},
+  {id:'p_kmooc',name:'K-MOOC 학습그룹',host:'교수학습개발센터(CTL)',period:'매학기 운영',url:'https://barun.kyonggi.ac.kr/',types:['school','edtech'],desc:'온라인 공개강의(K-MOOC)를 함께 수강하며 학습을 이어가는 그룹 활동. 교육학·교직 관련 MOOC와 연계하면 교직 이론을 자기주도적으로 심화할 수 있습니다.'},
+  {id:'p_barun_project',name:'BARUN 문제해결 프로젝트',host:'교수학습개발센터(CTL)',period:'매학기 초 신청',url:'https://barun.kyonggi.ac.kr/',types:['edtech','public'],desc:'팀을 구성해 실제 문제를 기획·해결하는 프로젝트형 프로그램. 선배들이 꾸준히 참여해온 프로그램으로, 협업 역량과 창의적 사고를 키우는 데 효과적입니다.'},
+  {id:'p_lecture',name:'기초 학습법 특강 (온라인 자율수강)',host:'교수학습개발센터(CTL)',period:'학기 중 상시 수강 가능',url:'https://barun.kyonggi.ac.kr/',types:['school','edtech','public','counsel'],desc:'수업방법(PBL·플립러닝·토의토론), 리포트 작성법, 프레젠테이션 전략, 학습전략 등 다양한 특강을 온라인으로 자유롭게 이수. 선배들이 가장 많이 수강한 개별 콘텐츠이며, 교직 실기 역량에 직결됩니다.'},
+  {id:'p_advanced',name:'심화 학습법 워크숍',host:'교수학습개발센터(CTL)',period:'학기 중 운영',url:'https://barun.kyonggi.ac.kr/',types:['school','edtech'],desc:'파워포인트·노션·인포그래픽·논리적 글쓰기 등 실무 역량을 키우는 워크숍. 수업 자료 제작, 교수학습 설계에도 바로 활용할 수 있어 교직이수생에게 유용합니다.'},
+  {id:'p_gender',name:'예비교원 성인지교육',host:'인권·성평등센터 / 인재개발처',period:'매학기 6월·12월경 운영',url:'https://barun.kyonggi.ac.kr/',types:['school','public','edtech','counsel'],desc:'교직이수생 필수 이수 항목. 선배들이 매년 꾸준히 참여해온 프로그램으로, 예비교사로서 갖춰야 할 성인지 감수성을 기릅니다.',note:'⚡ 공지사항에서 "예비교원 성인지교육"으로 검색해 신청 일정을 확인하세요.'},
+  {id:'p_cpr',name:'심폐소생술(CPR) 심화과정',host:'교직학과 / 교수학습개발센터',period:'매학기 운영 (공지 확인 필수)',url:'https://barun.kyonggi.ac.kr/',types:['school','public','counsel'],desc:'교직이수생 필수 활동. 선배들이 매 학기 참여해온 프로그램입니다. 기초과정 이수 후 심화과정을 순서대로 이수하세요.',note:'⚡ 공지사항에서 "심폐소생술"로 검색해 이수 일정을 확인하세요.'},
+  {id:'p_talk',name:'TaLK Program (Teach and Learn at KGU)',host:'교수학습개발센터(CTL)',period:'매학기 운영',url:'https://barun.kyonggi.ac.kr/',types:['school','counsel'],desc:'가르침과 배움을 주제로 한 학습공동체 프로그램. 교직이수 선배들이 꾸준히 참여해온 프로그램으로, 수업 설계와 교수법을 실질적으로 탐구할 수 있습니다.'},
+  {id:'p_runningman',name:'러닝맨(Learning-men)',host:'교수학습개발센터(CTL)',period:'매학기 운영',url:'https://barun.kyonggi.ac.kr/',types:['school','edtech'],desc:'학습 습관과 전략을 체계적으로 개발하는 프로그램. 선배들이 꾸준히 참여해왔으며, 자기주도 학습 역량을 키우는 데 효과적입니다.'},
+  {id:'p_career_ws',name:'진로 워크숍 (진로설계·MBTI·진로탐색)',host:'학생상담센터 / 인재개발처',period:'학기 중 운영',url:'https://barun.kyonggi.ac.kr/',types:['counsel','public'],desc:'나의 미래와 진로를 설계하거나 MBTI를 활용해 진로를 탐색하는 워크숍. 교직 이외의 진로도 함께 탐색하고 싶은 학생에게 추천됩니다.'},
+  {id:'p_mentor',name:'현직자 멘토링·잡카페 특강',host:'인재개발처',period:'학기 중 수시 운영',url:'https://job.kyonggi.ac.kr/ko/program/index/list',types:['public','edtech','counsel'],desc:'현직 교육행정가, HRD 담당자, 에듀테크 기획자 등 다양한 분야 현직자의 진로 이야기를 듣는 멘토링. 교사 외 진로를 탐색하는 데 효과적입니다.'},
+  {id:'p_preredu',name:'예비교사를 위한 비교과 (우크렐레·미술치료·인성교육 등)',host:'교직학과 / 교수학습개발센터',period:'학기 중 비정기 운영',url:'https://barun.kyonggi.ac.kr/',types:['school','counsel'],desc:'우크렐레 연주, 미술치료 교육, 인성교육(명상·예술놀이) 등 예비교사로서의 감수성과 표현력을 기르는 특화 프로그램. 선배들이 실제로 참여한 기록이 있는 과정들입니다.'}
+];
+function renderProgList(type){
+  var box=document.getElementById('progList');
+  if(!box) return;
+  var order=PROGRAMS.slice();
+  order.sort(function(a,b){
+    var as=(type&&a.types.indexOf(type)>-1)?1:0;
+    var bs=(type&&b.types.indexOf(type)>-1)?1:0;
+    return bs-as;
+  });
+  box.innerHTML='';
+  order.forEach(function(p){
+    var isRec=type&&p.types.indexOf(type)>-1;
+    var div=document.createElement('div');
+    div.className='prog-card';
+    if(isRec) div.style.borderColor='var(--coral)';
+    var badges=(isRec?'<span class="rec-badge">맞춤추천</span>':'');
+    div.innerHTML=badges+'<h4>'+p.name+'</h4>'+
+      '<div class="meta">주관: '+p.host+' · 신청·운영: '+p.period+'</div>'+
+      '<p>'+p.desc+'</p>'+
+      (p.note?'<div class="warn-box" style="margin-top:6px;">'+p.note+'</div>':'')+
+      '<a class="lnk" href="'+p.url+'" target="_blank">관련 정보·신청 바로가기 →</a>';
+    box.appendChild(div);
+  });
+}
+
+/* ===== Cloudflare Worker 프록시 (OpenAI API) ===== */
+// ⚠️ 배포 시 아래 주소를 본인의 Cloudflare Worker 주소로 바꿔주세요.
+var MAJOR_LABELS={language:'국어·영어·외국어·역사(인문계열)',stem:'수학·화학(이과계열)',library:'문헌정보·사서',tourism:'관광·조리·호텔·연기',sports:'체육·예술'};
+
+/* ===== Anthropic API 키 관리 ===== */
+var __apiKeyCache='';
+function getApiKey(){
+  try{ return localStorage.getItem('openai_api_key')||__apiKeyCache; }
+  catch(e){ return __apiKeyCache; }
+}
+function setApiKey(key){
+  __apiKeyCache=key.trim();
+  try{ localStorage.setItem('openai_api_key', key.trim()); }catch(e){}
+}
+function promptApiKey(){
+  var current=getApiKey();
+  var key=prompt(
+    'OpenAI API 키를 입력하세요.\n(https://platform.openai.com/api-keys 에서 발급)\n\n키는 브라우저에 로컬 저장됩니다.',
+    current
+  );
+  if(key!==null && key.trim()){
+    setApiKey(key);
+    return key.trim();
+  }
+  return current;
+}
+
+async function callGPT(messages){
+  var apiKey=getApiKey();
+  if(!apiKey){
+    apiKey=promptApiKey();
+    if(!apiKey){
+      alert('API 키가 없어 AI 기능을 사용할 수 없습니다.');
+      return null;
+    }
+  }
+  try{
+    var res=await fetch('https://api.openai.com/v1/chat/completions',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'Authorization':'Bearer '+apiKey
+      },
+      body:JSON.stringify({
+        model:'gpt-4o-mini',
+        max_tokens:1000,
+        temperature:0.7,
+        messages:messages
+      })
+    });
+    var data=await res.json();
+    if(data.error){
+      if(data.error.code==='invalid_api_key'||data.error.type==='invalid_request_error'){
+        __apiKeyCache='';
+        try{ localStorage.removeItem('openai_api_key'); }catch(e){}
+        alert('API 키가 올바르지 않습니다. 다시 입력해주세요.');
+      } else {
+        alert('AI 오류: '+data.error.message);
+      }
+      return null;
+    }
+    return data.choices[0].message.content;
+  }catch(e){
+    alert('네트워크 오류: '+e.message+'\n(잠시 후 다시 시도해주세요.)');
+    return null;
+  }
+}
+
+/* ===== API 키 UI 업데이트 ===== */
+function updateApiKeyStatus(){
+  var statusEl=document.getElementById('apiKeyStatus');
+  var btnEl=document.getElementById('apiKeyBtn');
+  if(!statusEl) return;
+  if(getApiKey()){
+    statusEl.textContent='API 키 설정됨 ✓';
+    statusEl.style.color='var(--green)';
+    if(btnEl){ btnEl.textContent='키 변경'; btnEl.style.background='var(--sub)'; }
+  } else {
+    statusEl.textContent='OpenAI API 키 미설정 — 질문 전 먼저 설정해주세요';
+    statusEl.style.color='var(--coral)';
+    if(btnEl){ btnEl.textContent='키 설정'; btnEl.style.background='var(--navy)'; }
+  }
+}
+function handleApiKeyBtn(){
+  var key=prompt(
+    '🔑 OpenAI API 키를 입력하세요.\n\n발급: https://platform.openai.com/api-keys\n(sk-로 시작하는 키)\n\n⚠ 키는 브라우저에 로컬 저장됩니다.',
+    getApiKey()
+  );
+  if(key===null) return;
+  if(key.trim()){
+    setApiKey(key.trim());
+    updateApiKeyStatus();
+  } else {
+    localStorage.removeItem('openai_api_key');
+    updateApiKeyStatus();
+  }
+}
+var DEPT_BASIC = {
+  korean:  '<strong>국어국문학과</strong> — 4개 분야에서 7과목 21학점 이상<br>① 국어학: 한국어학의이해 / 한국어문법론 / 한국어의역사<br>② 문학: 한국현대문학의이해 / 고전문학사의라이벌·한국문학사와예술사 중 택1<br>③ 문학교육론: 한국현대시론 / 한국현대소설론 중 택1<br>④ 의사소통교육론: 한국어와대중매체 / 한국어의의미와화용 중 택1',
+  english: '<strong>영어영문학과</strong> — 7과목 21학점 이상<br>영어학개론 / 영어문법1·2 중 택1 / 실용영어회화1·2 중 택1 / 영어작문1·2 중 택1 / 고급영어독해 / 영어음성학·영어음운론 중 택1 / 영미문화 / 영문학개론',
+  german:  '<strong>독어독문전공</strong> — 7과목 21학점 이상<br>독어학의이해 / 독일명작의이해 / 독일어문법1·2 중 택1 / 독일어회화1·2·3 중 택1 / 독일어작문 / 독일문학비평 / 독일문화와사회 / 독문번역연습',
+  chinese: '<strong>중어중문전공</strong> — 7과목 21학점 이상<br>중국문학의이해 / 실용중국어어법 / 중급중국어회화연습·고급중국어회화 중 택1 / 중국어AI번역작문 / 중국사회문화입문·주제별탐구 중 택1 / 중국어학의이해 / 중급중국어강독·고급중국어강독 중 택1 / 제자백가의이해',
+  history: '<strong>사학과</strong> — 5분야에서 7과목 21학점 이상<br>① 역사학방법론: 역사학입문·한국사입문·동아시아사입문·서양사입문 중 택1<br>② 한국사: 한국고대사·중세사·근세사·근대사 중 택1<br>③ 세계사: 동아시아고대·중세·근세사 / 서양고대·중세·근현대사 / 미국사 중 택1<br>④ 분야사: 조선왕조궁궐사·지역사와박물관 중 택1<br>⑤ 현대사: 한국현대사·동아시아현대사·서양현대사 중 택1',
+  library: '<strong>문헌정보학과 (사서교사)</strong> — 7과목 21학점 이상<br>정보자원분류론 / 정보자원목록론 / 디지털도서관 / 독서교육 / 정보검색론 / 정보서비스론 / 학교도서관경영 / 정보미디어론<br><span style="color:var(--coral);">⚠ 사서교사는 교과교육영역 이수 불필요, 교육실습→도서관실습 대체</span>',
+  math:    '<strong>수학과</strong> — 7과목 21학점 이상<br>정수론 / 복소해석학1·2 중 택1 / 해석학·고급해석학 중 택1 / 선형대수1·2 중 택1 / 현대대수학1·2 중 택1 / 미분기하학1·2 중 택1 / 위상수학1·2 중 택1 / 확률론·수리통계학 중 택1 / 기하학일반 / 조합및그래프이론',
+  chemistry:'<strong>화학과</strong> — 8분야 중 7분야, 21학점 이상<br>① 물리화학 / ② 유기화학 / ③ 무기화학 / ④ 분석화학(분석화학1및실험) / ⑤ 물리화학실험 / ⑥ 유기화학실험 / ⑦ 무기화학실험 / ⑧ 분석화학실험(분석화학2및실험)',
+  pe:      '<strong>체육학과</strong> — 7과목 21학점 이상<br>체육사·철학 / 스포츠심리학 / 스포츠사회학 / 운동생리학 / 운동역학 / 운동실기 / 체육측정평가 / 건강교육 / 무용교육 / 특수체육 / 여가레크리에이션 / 응급처치와심폐소생술 (중 7과목)',
+  tourism: '<strong>호텔경영·관광이벤트 전공 (표시과목: 관광)</strong> — 7과목 21학점 이상<br>관광학원론 / 여행사경영론 / 호텔경영론 / 관광교통과모빌리티 / 관광자원개발론 / 관광법규 / 컨벤션실무론·컨벤션산업론 중 택1',
+  cooking: '<strong>외식조리전공 (표시과목: 조리)</strong> — 7과목 21학점 이상<br>식품과조리과학 / 한식조리실기1 / 중급서양조리실습 / 제과제빵실기 / 단체급식론 / 영양학 / 식품위생과법규',
+  drama:   '<strong>연기학과 (표시과목: 연극영화)</strong> — 7과목 21학점 이상<br>세계연기예술사 / 공연예술의이론과실제 / 화법의실제 / 공연제작종합설계3·다원제작워크숍 중 택1 / 연기실습워크숍1·2·3·4 중 택1 / 스토리텔링창작워크숍 / 매체연기워크숍'
+};
+var DEPT_EDU = {
+  korean:  '<strong>국어</strong> — 교과교육영역 3과목 (모두 직자 이수구분)<br>· 국어교육론<br>· 국어교재연구및지도법<br>· 논리및논술 (ZD475, 3학점)',
+  english: '<strong>영어</strong> — 교과교육영역 3과목 (모두 직자 이수구분)<br>· 영어교육론<br>· 영어교재연구및지도법<br>· 논리및논술 (ZD475, 3학점)',
+  german:  '<strong>독일어</strong> — 교과교육영역 3과목 (모두 직자 이수구분)<br>· 독일어교육론<br>· 독일어교재연구및지도법<br>· 논리및논술 (ZD475, 3학점)',
+  chinese: '<strong>중국어</strong> — 교과교육영역 3과목 (모두 직자 이수구분)<br>· 중국어교육론<br>· 중국어교재연구및지도법<br>· 논리및논술 (ZD475, 3학점)',
+  history: '<strong>역사</strong> — 교과교육영역 3과목 (모두 직자 이수구분)<br>· 역사교육론<br>· 역사교재연구및지도법<br>· 논리및논술 (ZD475, 3학점)',
+  library: '<strong>사서</strong> — 교과교육영역 이수 불필요<br>사서교사는 교과교육영역 전체를 이수하지 않아도 됩니다.',
+  math:    '<strong>수학</strong> — 교과교육영역 3과목 (직자 이수구분)<br>· 수학교육론<br>· 수학교재연구및지도법<br>· 수학논리및논술 (ZD475 대신 이수)',
+  chemistry:'<strong>화학</strong> — 교과교육영역 3과목 (직자 이수구분)<br>· 과학교육론<br>· 과학교재연구및지도법<br>· 논리및논술 (ZD475, 3학점)',
+  pe:      '<strong>체육</strong> — 교과교육영역 3과목 (직자 이수구분)<br>· 체육교육론<br>· 체육교재연구및지도법<br>· 체육논리및논술 (ZD475 대신 이수)',
+  tourism: '<strong>관광</strong> — 교과교육영역 3과목 (직자 이수구분)<br>· 관광교육론 (ZD472)<br>· 관광교재연구및지도법 (ZD002)<br>· 논리및논술 (ZD475, 3학점)',
+  cooking: '<strong>조리</strong> — 교과교육영역 3과목 (직자 이수구분)<br>· 조리교육론<br>· 조리교재연구및지도법<br>· 논리및논술 (ZD475, 3학점)',
+  drama:   '<strong>연극영화</strong> — 교과교육영역 3과목 (직자 이수구분)<br>· 연극교육론<br>· 연극교재연구및지도법<br>· 논리및논술 (ZD475, 3학점)'
+};
+
+function toggleDeptSection(type, major){
+  var detailId = type+'-detail';
+  var chipsId = type+'Chips';
+  var box = document.getElementById(detailId);
+  if(!box) return;
+  var data = type==='basic' ? DEPT_BASIC : DEPT_EDU;
+  document.querySelectorAll('#'+chipsId+' .chip').forEach(function(b){b.classList.remove('on');});
+  if(box.dataset.current===major && box.style.display!=='none'){
+    box.style.display='none'; box.dataset.current=''; return;
+  }
+  box.innerHTML = data[major] || '해당 전공 정보 준비 중입니다.';
+  box.style.display = 'block';
+  box.dataset.current = major;
+  if(event && event.currentTarget) event.currentTarget.classList.add('on');
+}
+
+var ROUTE_CONTENT={
+  intro:{
+    title:'교직이수, 이렇게 시작하세요',
+    body:'교직과정은 일반 학과에 재학하면서 중등학교 정교사(2급) 자격증을 함께 취득할 수 있는 제도예요.\n\n핵심 조건 3가지만 기억하세요.\n① 전공과목 50학점 이상\n② 교직과목 24학점 이상 (이론 12 + 소양 8 + 실습 4)\n③ 교육봉사 60시간 이상\n\n여기에 적·인성검사, CPR, 성인지교육, 교육실습(4주)을 모두 마쳐야 4학년 2학기에 자격증 신청이 가능해요.',
+    action:'이수절차 탭에서 전체 흐름 확인하기',
+    tab:'process'
+  },
+  apply:{
+    title:'교직이수 신청 방법',
+    body:'신청 시기는 2학년 2학기 초(9월경)입니다. 이 시기를 놓치면 다음 기회가 없으니 반드시 공지를 확인하세요.\n\n신청 절차\n① 2학년 2학기 초 공지사항 확인 (교직학과 홈페이지)\n② 이수신청서 출력 → 소속 학과사무실 제출\n③ 2학년 2학기 말 선발 발표 (4개 학기 성적 + 인성·적성·자질 반영)\n\n편입생(학사편입 포함)은 원칙적으로 신청 불가.',
+    action:'공지사항 바로가기',
+    tab:'process'
+  },
+  now:{
+    title:'지금 내가 할 일 바로 확인',
+    body:'홈 탭의 "지금 내가 할 일 찾기" 에서 학년·학기를 선택하면 현재 시점에 맞는 체크리스트를 바로 확인할 수 있어요.',
+    action:'홈 탭 → 할 일 확인하기로 이동',
+    tab:'home'
+  },
+  career:{
+    title:'교사 말고 이런 진로도 있어요',
+    body:'교직이수 후 교사 외에도 다양한 교육 관련 직군에 도전할 수 있어요.\n\n· 교육행정직: 교육청, 교육부, 공공기관\n· 에듀테크: 교육 콘텐츠 기획·개발, 러닝디자이너\n· 평생교육사: 지역 평생학습관, 기업 HRD\n· 청소년지도사: 청소년 수련시설, 복지관\n· 교육 컨설팅·출판: 교재 개발, 학습 코칭\n\n아래 AI 진로 진단을 통해 나에게 맞는 트랙을 찾아보세요.',
+    action:'AI 진로 진단 바로가기',
+    tab:'career'
+  },
+  minor:{
+    title:'교직이수 vs 교육학 부전공 차이',
+    body:'두 제도는 목적과 결과물이 다릅니다.\n\n교직이수\n· 결과물: 중등 정교사(2급) 자격증\n· 취득 경로: 선발 경쟁, 이수 요건 충족\n· 주 활용처: 임용고시 응시, 사립학교 지원\n\n교육학 부전공\n· 결과물: 교육학 부전공 이수 기록 (자격증 아님)\n· 취득 경로: 규정 학점 이수\n· 주 활용처: 교육 관련 대학원 진학, 직무 역량 강화\n\n자격증이 목표라면 교직이수, 교육학 지식 심화가 목표라면 부전공을 고려하세요.',
+    action:'부전공 탭에서 자세히 확인하기',
+    tab:'minor'
+  },
+  counsel:{
+    title:'AI 진로 상담으로 이동합니다',
+    body:'아래 AI 진로 상담 채팅에 궁금한 걸 자유롭게 입력하세요. 질문이 막막하다면 💡 추천 질문 칩을 눌러보세요.',
+    action:null,
+    tab:null
+  }
+};
+
+function goRoute(key){
+  var r=ROUTE_CONTENT[key];
+  if(!r) return;
+  // 버튼 선택 표시
+  document.querySelectorAll('#routeList .dopt').forEach(function(b){b.classList.remove('sel');});
+  event.currentTarget.classList.add('sel');
+
+  var box=document.getElementById('routeResult');
+  box.style.display='block';
+
+  var actionHTML='';
+  if(r.tab){
+    actionHTML='<button onclick="showTab(\''+r.tab+'\')" style="margin-top:10px;padding:9px 18px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">'+r.action+' →</button>';
+  }else{
+    actionHTML='<button onclick="document.getElementById(\'counselInput\').focus()" style="margin-top:10px;padding:9px 18px;background:var(--coral);color:#fff;border:none;border-radius:8px;font-size:12.5px;font-weight:700;cursor:pointer;">AI 상담 바로 시작하기 ↓</button>';
+  }
+
+  box.innerHTML='<div style="font-size:13px;font-weight:800;color:var(--navy);margin-bottom:8px;">'+r.title+'</div>'
+    +'<div style="white-space:pre-line;font-size:12.5px;color:#444;line-height:1.75;">'+r.body+'</div>'
+    +actionHTML;
+
+  box.scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+
+/* ===== AI 진로 상담 ===== */
+var counselMessages=[];
+var COUNSEL_SYSTEM='너는 경기대학교 교직이수 플랫폼의 AI 진로 상담사다. 학생의 질문을 아래 6가지 유형 중 하나로 내부 판단하고(출력 안 함) 그에 맞게 답하라: 조건확인/비교탐색/적합성판단/미래불안/실행계획/심화탐구. 응답 구조: ① 핵심 답변 2~3문장 → ② 관련 맥락이나 현실 정보 → ③ 이 학생이 다음에 탐색하면 좋을 질문 1개 제안("이런 것도 확인해보면 어떨까요: ..."). 금지: "교직이 좋다/나쁘다" 단정, 마크다운 기호(#*-) 사용. 수치·합격률 등은 "공식 자료나 교직학과에 확인하세요" 언급 필수. 경기대 교직 핵심 정보: 교직과목 24학점(이론12+소양8+실습4), 전공 50학점↑, 교육봉사 60시간↑, 선발 2학년 2학기. 한국어로, 자연스러운 문장과 줄바꿈으로, 600자 이내.';
+
+function setCounselQ(text){
+  document.getElementById('counselInput').value=text;
+  document.getElementById('counselInput').focus();
+}
+
+function appendCounselBubble(who,text){
+  var log=document.getElementById('counselChatLog');
+  var div=document.createElement('div');
+  div.className='chat-bubble '+who;
+  div.style.whiteSpace='pre-wrap';
+  div.textContent=text;
+  log.appendChild(div);
+  log.scrollTop=log.scrollHeight;
+  return div;
+}
+
+async function sendCounsel(){
+  var input=document.getElementById('counselInput');
+  var text=input.value.trim();
+  if(!text) return;
+
+  // API 키 사전 확인
+  if(!getApiKey()){
+    handleApiKeyBtn();
+    if(!getApiKey()) return;
+  }
+
+  // 첫 메시지면 시스템 프롬프트에 진로 진단 결과 포함
+  if(counselMessages.length===0){
+    var majorLabel=DA.major?MAJOR_LABELS[DA.major]:'미입력';
+    var type=DA.val?getType():'';
+    var typeLabel=type?BADGES[type]:'미진단';
+    var sysContent=COUNSEL_SYSTEM+' 참고 — 이 학생의 전공 계열: '+majorLabel+', AI 진로 진단 결과: '+typeLabel+'.';
+    counselMessages.push({role:'system',content:sysContent});
+  }
+
+  appendCounselBubble('user',text);
+  counselMessages.push({role:'user',content:text});
+  input.value='';
+
+  var loading=appendCounselBubble('ai','생각 중...');
+  var reply=await callGPT(counselMessages);
+  if(!reply){loading.textContent='⚠️ 응답을 가져오지 못했어요. 잠시 후 다시 시도해주세요.';return;}
+  counselMessages.push({role:'assistant',content:reply});
+  loading.textContent=reply;
+}
+
+function resetCounsel(){
+  counselMessages=[];
+  document.getElementById('counselChatLog').innerHTML='';
+  document.getElementById('counselInput').value='';
+}
+
+// Enter로 전송 (Shift+Enter는 줄바꿈)
+async function runReadinessCheck(){
+  if(!getApiKey()){
+    handleApiKeyBtn();
+    if(!getApiKey()) return;
+  }
+  var type=DA.val?getType():'';
+  var typeLabel=type?BADGES[type]:'아직 AI 진로 진단을 하지 않음';
+  var majorLabel=DA.major?MAJOR_LABELS[DA.major]:'미입력';
+  var box=document.getElementById('aiPlanResult');
+  box.innerHTML='<p style="color:var(--sub);font-size:12px;margin-top:8px;">AI가 분석 중입니다...</p>';
+  var messages=[
+    {role:'system',content:'너는 경기대학교 교직이수 학생을 위한 학사·진로 코치다. 한국어로, 700자 이내로 핵심만 답하라. 마크다운 기호(#, *, -) 없이 자연스러운 문장과 줄바꿈으로 작성하라.'},
+    {role:'user',content:'내 정보 — 전공 계열: '+majorLabel+', 진로진단 결과: '+typeLabel+'. 이 정보를 바탕으로 (1) 현재 시점에서 챙겨야 할 핵심을 한두 문장으로 짚고, (2) 부족해 보이는 영역 2~3가지, (3) 이번 학기~다음 학기에 우선적으로 할 일 3가지를 제시해줘.'}
+  ];
+  var reply=await callGPT(messages);
+  if(!reply){box.innerHTML='';return;}
+  box.innerHTML='<div class="ai-result-body">'+reply.replace(/\n/g,'<br>')+'</div>';
+}
+
+function goToMinor(){
+  showTab('minor');
+  setTimeout(function(){
+    var el=document.getElementById('minor-elective');
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  },150);
+}
+
+function showTab(id){
+  document.querySelectorAll('.tabc').forEach(function(p){p.classList.remove('show');});
+  document.getElementById('tab-'+id).classList.add('show');
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('on');});
+  var idx=['home','process','credit','cases','calendar','professor','career','minor'].indexOf(id);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function filterGrade(grade, btn){
+  document.querySelectorAll('.grade-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  document.querySelectorAll('.cal-year').forEach(function(el){
+    if(grade==='all'||el.getAttribute('data-grade')===grade){
+      el.classList.remove('hidden');
+    } else {
+      el.classList.add('hidden');
+    }
+  });
+}
+
+function filterCase(major, btn){
+  var row=btn.closest('#caseFilterRow');
+  if(row) row.querySelectorAll('.grade-btn').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  document.querySelectorAll('.case-card').forEach(function(el){
+    var m=el.getAttribute('data-major');
+    if(major==='all'){
+      // 전체 보기: 모두 표시 (공통 안내도 표시)
+      el.style.display='';
+    } else if(m===major){
+      el.style.display='';
+    } else if(m==='all'){
+      // 전체목록 카드: 전공 선택 시 숨김
+      el.style.display='none';
+    } else {
+      el.style.display='none';
+    }
+  });
+  // 해당 전공 카드로 스크롤
+  if(major!=='all'){
+    var target=document.querySelector('.case-card[data-major="'+major+'"]');
+    if(target) setTimeout(function(){target.scrollIntoView({behavior:'smooth',block:'start'});},50);
+  }
+}
+
+function filterDepts(){
+  render();
+}
+
+function toggleDetail(id){
+  var el=document.getElementById(id);
+  if(el) el.classList.toggle('open');
+}
+
+function toggleTodoStatus(){
+  var y=document.getElementById('todoYear').value;
+  var s=document.getElementById('todoSem').value;
+  var show=(y==='2'&&s==='2');
+  document.getElementById('todoStatus').style.display=show?'':'none';
+  document.getElementById('todoStatusHint').style.display=show?'':'none';
+}
+function genTodo(){
+  var y=document.getElementById('todoYear').value;
+  var s=document.getElementById('todoSem').value;
+  var st=document.getElementById('todoStatus').value;
+  var box=document.getElementById('todoResult');
+  if(!y||!s){box.innerHTML='<div class="warn-box">학년과 학기를 선택해주세요.</div>';return;}
+  var key=y+'-'+s;
+  if(key==='2-2') key='2-2-'+st;
+  var list=TODO_MAP[key]||['해당 시기에 대한 정보가 준비 중입니다. 교직학과에 문의해주세요.'];
+  var statusNote='';
+  if(y==='1'||(y==='2'&&s==='1')) statusNote='<div class="warn-box" style="margin-bottom:8px;">ℹ️ 교직과정 선발은 <strong>2학년 2학기</strong>에 진행됩니다. 지금은 전원 "선발 전" 상태이며, 누구나 동일하게 아래 내용이 적용됩니다.</div>';
+  else if(y>='3') statusNote='<div class="warn-box" style="margin-bottom:8px;">ℹ️ 3학년 이상은 <strong>교직과정 선발이 완료된 학생</strong> 기준의 안내입니다.</div>';
+  var html='<div class="card" style="background:#f7f8fc;margin-bottom:0;">'+statusNote+'<h3>'+y+'학년 '+s+'학기에 챙길 일</h3><ul>';
+  list.forEach(function(t){html+='<li>'+t+'</li>';});
+  html+='</ul></div>';
+  box.innerHTML=html;
+}
+
+function render(){
+  var elGyojik=document.getElementById('home-gyojik');
+  if(elGyojik) elGyojik.textContent='24학점↑';
+  var elGyojikNote=document.getElementById('home-gyojiknote');
+  if(elGyojikNote) elGyojikNote.textContent='이론12+소양8+실습4';
+
+  // 교직이론 칩
+  var tc=document.getElementById('theory-chips');
+  var td=document.getElementById('theory-details');
+  if(tc && td){
+    tc.innerHTML='';td.innerHTML='';
+    THEORY.forEach(function(t,i){
+      var c=document.createElement('span');
+      c.className='chip req';
+      c.textContent=t.name;
+      var bid='th'+i;
+      c.onclick=function(){toggleDetail(bid);};
+      tc.appendChild(c);
+      var box=document.createElement('div');
+      box.className='detail-box';box.id=bid;
+      box.innerHTML='<p>'+t.note+'</p>';
+      td.appendChild(box);
+    });
+  }
+
+  // 학과 검색
+  var deptInputEl=document.getElementById('deptInput');
+  var list=document.getElementById('dept-list');
+  if(!list) return;
+  var q=(deptInputEl?deptInputEl.value||'':'').trim();
+  list.innerHTML='';
+  DEPTS.forEach(function(dep){
+    if(q && dep.k.indexOf(q)===-1) return;
+    var card=document.createElement('div');
+    card.className='dept-card';
+    card.innerHTML='<h4>'+dep.name+' <span class="pill '+dep.pill[0]+'">'+dep.pill[1]+'</span></h4>'+
+      '<div class="g2"><div class="courses">'+dep.basic+'</div><div class="courses">'+dep.edu+'</div></div>';
+    list.appendChild(card);
+  });
+  if(list.innerHTML==='') list.innerHTML='<p style="font-size:12.5px;color:var(--sub);text-align:center;padding:20px 0;">검색 결과가 없습니다.</p>';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  // nav를 헤더 높이만큼 top에 고정
+  function fixNavTop(){
+    var header=document.querySelector('header.top');
+    var nav=document.getElementById('tabNav');
+    if(header&&nav){
+      nav.style.top=header.offsetHeight+'px';
+    }
+  }
+  fixNavTop();
+  window.addEventListener('resize',fixNavTop);
+
+  // API 키 상태 초기화
+  updateApiKeyStatus();
+
+  render();
+  renderJobList();
+  renderProgList();
+
+  var ta=document.getElementById('counselInput');
+  if(ta){
+    ta.addEventListener('keydown',function(e){
+      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendCounsel();}
+    });
+  }
+});
+</script>
+
+<!-- ===== 건의하기 플로팅 버튼 & 모달 ===== -->
+<!-- 🔧 아래 FEEDBACK_URL 에 Padlet embed 주소 또는 Google Forms URL 을 넣으세요 -->
+<script>
+  var FEEDBACK_URL = 'https://padlet.com/kgu_edupsy/KGUteacher'; // 건의하기 Padlet
+</script>
+
+<button class="fab" onclick="openFeedback()">
+  <i class="ti ti-message-plus"></i> 건의하기
+</button>
+
+<div class="modal-overlay" id="feedbackModal" onclick="closeFeedbackOutside(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3><i class="ti ti-message-plus"></i> 익명 건의 · 요청하기</h3>
+      <button class="modal-close" onclick="closeFeedback()">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12.5px;color:var(--sub);margin-bottom:12px;">교직이수 플랫폼 개선을 위한 건의사항이나 요청을 익명으로 남겨주세요. 매 학기 검토 후 플랫폼 운영에 반영합니다.</p>
+      <div id="feedbackContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openFeedback(){
+  var url = (typeof FEEDBACK_URL !== 'undefined') ? FEEDBACK_URL : '';
+  var el = document.getElementById('feedbackContent');
+  if(url && url.trim() !== ''){
+    el.innerHTML = '<iframe class="modal-iframe" src="'+url+'" allow="camera;microphone"></iframe>';
+  } else {
+    el.innerHTML = '<div class="modal-placeholder"><strong>🔧 연동 설정이 필요합니다</strong>Padlet 또는 Google Forms를 만든 후<br>소스 코드의 <code>FEEDBACK_URL</code> 에 링크를 입력해 주세요.<br><br><span style="font-size:12px;">추천: <a href="https://padlet.com" target="_blank">Padlet</a> (익명 게시판) 또는 <a href="https://forms.google.com" target="_blank">Google Forms</a> (익명 설문)</span></div>';
+  }
+  document.getElementById('feedbackModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeFeedback(){
+  document.getElementById('feedbackModal').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeFeedbackOutside(e){
+  if(e.target===document.getElementById('feedbackModal')) closeFeedback();
+}
+</script>
+
+</body>
+</html>
